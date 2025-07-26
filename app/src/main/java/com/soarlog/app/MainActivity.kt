@@ -49,7 +49,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import com.soarlog.app.viewmodel.FlightLogViewModelFactory
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -230,11 +230,11 @@ fun FlightLogForm(
             )
 
             flights.firstOrNull()?.let { flight ->
-                gliderType = flight.aircraftModel
-                takeoff = "${flight.takeoffLat}, ${flight.takeoffLon}"
-                landing = "${flight.landingLat}, ${flight.landingLon}"
+                gliderType = flight.gliderType
+                takeoff = flight.takeoff
+                landing = flight.landing
                 launchType = flight.launchType
-                duration = ((flight.landingTs - flight.takeoffTs) / 60).toString()
+                duration = flight.duration.toString()
             }
         }
     }
