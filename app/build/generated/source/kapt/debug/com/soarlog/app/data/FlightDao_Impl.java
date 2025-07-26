@@ -2,6 +2,7 @@ package com.soarlog.app.data;
 
 import android.database.Cursor;
 import androidx.room.CoroutinesRoom;
+import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
@@ -34,6 +35,8 @@ public final class FlightDao_Impl implements FlightDao {
   private final EntityInsertionAdapter<Flight> __insertionAdapterOfFlight;
 
   private final Converters __converters = new Converters();
+
+  private final EntityDeletionOrUpdateAdapter<Flight> __deletionAdapterOfFlight;
 
   public FlightDao_Impl(RoomDatabase __db) {
     this.__db = __db;
@@ -90,6 +93,17 @@ public final class FlightDao_Impl implements FlightDao {
         }
       }
     };
+    this.__deletionAdapterOfFlight = new EntityDeletionOrUpdateAdapter<Flight>(__db) {
+      @Override
+      public String createQuery() {
+        return "DELETE FROM `flight` WHERE `id` = ?";
+      }
+
+      @Override
+      public void bind(SupportSQLiteStatement stmt, Flight value) {
+        stmt.bindLong(1, value.getId());
+      }
+    };
   }
 
   @Override
@@ -100,6 +114,23 @@ public final class FlightDao_Impl implements FlightDao {
         __db.beginTransaction();
         try {
           __insertionAdapterOfFlight.insert(flight);
+          __db.setTransactionSuccessful();
+          return Unit.INSTANCE;
+        } finally {
+          __db.endTransaction();
+        }
+      }
+    }, continuation);
+  }
+
+  @Override
+  public Object delete(final Flight flight, final Continuation<? super Unit> continuation) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      public Unit call() throws Exception {
+        __db.beginTransaction();
+        try {
+          __deletionAdapterOfFlight.handle(flight);
           __db.setTransactionSuccessful();
           return Unit.INSTANCE;
         } finally {

@@ -3,6 +3,7 @@ package com.soarlog.app.data
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Delete
 import com.soarlog.app.models.Flight
 import kotlinx.coroutines.flow.Flow
 
