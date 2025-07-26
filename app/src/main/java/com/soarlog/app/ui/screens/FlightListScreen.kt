@@ -24,8 +24,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.unit.dp
 import com.soarlog.app.models.Flight
+import com.soarlog.app.viewmodel.FlightLogViewModel
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -134,5 +136,7 @@ fun FlightListScreenPreview() {
         Flight(1, "G-ABCD", null, null, "K21", "Lasham", "Lasham", "Winch", 60, Date()),
         Flight(2, "G-EFGH", null, null, "Astir", "Lasham", "Lasham", "Aerotow", 120, Date())
     )
-    FlightListScreen(flights)
+    FlightListScreen(flights, viewModel = object : FlightLogViewModel(repository = null) {
+        override fun deleteFlight(flight: Flight) {}
+    })
 }

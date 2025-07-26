@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("flight-list") {
                             val flights by viewModel.allFlights.collectAsState(initial = emptyList())
-                            FlightListScreen(flights = flights)
+                            FlightListScreen(flights = flights, viewModel = viewModel)
                         }
                         composable("statistics") {
                             val flights by viewModel.allFlights.collectAsState(initial = emptyList())
