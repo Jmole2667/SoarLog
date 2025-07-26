@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.unit.dp
 import com.soarlog.app.models.Flight
+import com.soarlog.app.repository.FakeFlightRepository
 import com.soarlog.app.repository.FlightRepository
 import com.soarlog.app.viewmodel.FlightLogViewModel
 import java.util.Date
