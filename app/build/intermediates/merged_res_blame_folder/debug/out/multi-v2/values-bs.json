@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.soarlog.app-mergeDebugResources-46:/values-bs/values-bs.xml",
+            "outputFile": "com.soarlog.app-mergeDebugResources-53:/values-bs/values-bs.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Jackm\\.gradle\\caches\\8.14.2\\transforms\\b018d4079f93badb3cac1d7bdaf09cda\\transformed\\material3-1.0.0\\res\\values-bs\\values-bs.xml",
+                    "source": "C:\\Users\\Jackm\\.gradle\\caches\\8.14.2\\transforms\\9f3ed99de4df239b015123f3db0e3e7f\\transformed\\material3-1.0.0\\res\\values-bs\\values-bs.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",
@@ -13,15 +13,49 @@
                         "endOffsets": "125,206,283"
                     },
                     "to": {
-                        "startLines": "4,7,9",
+                        "startLines": "11,14,16",
                         "startColumns": "4,4,4",
-                        "startOffsets": "294,562,729",
+                        "startOffsets": "1019,1287,1454",
                         "endColumns": "74,80,76",
-                        "endOffsets": "364,638,801"
+                        "endOffsets": "1089,1363,1526"
                     }
                 },
                 {
-                    "source": "C:\\Users\\Jackm\\.gradle\\caches\\8.14.2\\transforms\\2c82191f36444316a3203c0148b63bc1\\transformed\\ui-1.4.0\\res\\values-bs\\values-bs.xml",
+                    "source": "C:\\Users\\Jackm\\.gradle\\caches\\8.14.2\\transforms\\06a572e37d41b9786065d8248f4f8295\\transformed\\core-1.12.0\\res\\values-bs\\values-bs.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,153,255,353,457,561,663,780",
+                        "endColumns": "97,101,97,103,103,101,116,100",
+                        "endOffsets": "148,250,348,452,556,658,775,876"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,26",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,203,305,403,507,611,713,2260",
+                        "endColumns": "97,101,97,103,103,101,116,100",
+                        "endOffsets": "198,300,398,502,606,708,825,2356"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Jackm\\.gradle\\caches\\8.14.2\\transforms\\597ec3d14472b469c3b74371bc9ef916\\transformed\\foundation-release\\res\\values-bs\\values-bs.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,145",
+                        "endColumns": "89,91",
+                        "endOffsets": "140,232"
+                    },
+                    "to": {
+                        "startLines": "30,31",
+                        "startColumns": "4,4",
+                        "startOffsets": "2629,2719",
+                        "endColumns": "89,91",
+                        "endOffsets": "2714,2806"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Jackm\\.gradle\\caches\\8.14.2\\transforms\\16b94613772d74f71ffc0b6c87dff6b9\\transformed\\ui-release\\res\\values-bs\\values-bs.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -30,28 +64,11 @@
                         "endOffsets": "201,289,383,482,568,645,737,829,914,986,1057,1138,1224,1297,1377,1447,1565"
                     },
                     "to": {
-                        "startLines": "2,3,5,6,8,10,11,12,13,14,15,16,17,18,20,21,22",
+                        "startLines": "9,10,12,13,15,17,18,19,20,21,22,23,24,25,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,206,369,463,643,806,883,975,1067,1152,1224,1295,1376,1462,1636,1716,1786",
+                        "startOffsets": "830,931,1094,1188,1368,1531,1608,1700,1792,1877,1949,2020,2101,2187,2361,2441,2511",
                         "endColumns": "100,87,93,98,85,76,91,91,84,71,70,80,85,72,79,69,117",
-                        "endOffsets": "201,289,458,557,724,878,970,1062,1147,1219,1290,1371,1457,1530,1711,1781,1899"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Jackm\\.gradle\\caches\\8.14.2\\transforms\\ca9eadbfc82e07ef0578f132c3acb2e3\\transformed\\core-1.9.0\\res\\values-bs\\values-bs.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "19",
-                        "startColumns": "4",
-                        "startOffsets": "1535",
-                        "endColumns": "100",
-                        "endOffsets": "1631"
+                        "endOffsets": "926,1014,1183,1282,1449,1603,1695,1787,1872,1944,2015,2096,2182,2255,2436,2506,2624"
                     }
                 }
             ]

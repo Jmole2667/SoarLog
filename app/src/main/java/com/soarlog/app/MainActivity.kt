@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,7 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -28,8 +26,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.activity.viewModels
 import androidx.compose.material3.Button
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -42,26 +38,17 @@ import com.soarlog.app.ui.theme.SoarLogTheme
 import com.soarlog.app.viewmodel.FlightLogViewModel
 import com.soarlog.app.models.Flight
 import java.util.Date
-
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.soarlog.app.ui.screens.FlightListScreen
 import com.soarlog.app.ui.screens.StatisticsScreen
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Scaffold
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.soarlog.app.ui.screens.FlightListScreen
-import com.soarlog.app.ui.screens.StatisticsScreen
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import com.soarlog.app.viewmodel.FlightLogViewModelFactory
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,18 +63,18 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 Scaffold(
                     bottomBar = {
-                        BottomNavigation {
-                            BottomNavigationItem(
+                        NavigationBar {
+                            NavigationBarItem(
                                 icon = { Icon(Icons.Default.List, contentDescription = "Flights") },
                                 selected = false,
                                 onClick = { navController.navigate("flight-list") }
                             )
-                            BottomNavigationItem(
+                            NavigationBarItem(
                                 icon = { Icon(Icons.Default.Create, contentDescription = "Log Flight") },
                                 selected = false,
                                 onClick = { navController.navigate("logbook") }
                             )
-                            BottomNavigationItem(
+                            NavigationBarItem(
                                 icon = { Icon(Icons.Default.Star, contentDescription = "Statistics") },
                                 selected = false,
                                 onClick = { navController.navigate("statistics") }
@@ -106,11 +93,11 @@ class MainActivity : ComponentActivity() {
                             })
                         }
                         composable("flight-list") {
-                            val flights by viewModel.allFlights.collectAsState()
+                            val flights by viewModel.allFlights.collectAsState(initial = emptyList())
                             FlightListScreen(flights = flights)
                         }
                         composable("statistics") {
-                            val flights by viewModel.allFlights.collectAsState()
+                            val flights by viewModel.allFlights.collectAsState(initial = emptyList())
                             StatisticsScreen(flights = flights)
                         }
                     }
@@ -126,15 +113,15 @@ fun FlightLogForm(
     viewModel: FlightLogViewModel,
     onNavigateToFlightList: () -> Unit
 ) {
-    val flightRegistration by remember { mutableStateOf("") }
-    val p2 by remember { mutableStateOf("") }
-    val notes by remember { mutableStateOf("") }
+    var flightRegistration by remember { mutableStateOf("") }
+    var p2 by remember { mutableStateOf("") }
+    var notes by remember { mutableStateOf("") }
     var gliderType by remember { mutableStateOf("") }
     var takeoff by remember { mutableStateOf("") }
     var landing by remember { mutableStateOf("") }
     var launchType by remember { mutableStateOf("") }
     var duration by remember { mutableStateOf("") }
-    val flights by viewModel.flights.collectAsState()
+    val flights by viewModel.allFlights.collectAsState(initial = emptyList())
 
     Scaffold(
         topBar = {
@@ -190,7 +177,7 @@ fun FlightLogForm(
                 label = { Text("Flight Registration") },
                 modifier = Modifier.fillMaxWidth()
             )
-            Button(onClick = { viewModel.getFlights(flightRegistration) }) {
+            Button(onClick = {  }) {
                 Text("Search")
             }
             OutlinedTextField(
@@ -257,6 +244,6 @@ fun FlightLogForm(
 @Composable
 fun FlightLogFormPreview() {
     SoarLogTheme {
-        FlightLogForm()
+        //FlightLogForm()
     }
 }
