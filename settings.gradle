@@ -1,0 +1,21 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "SoarLog"
+include(":app")
+
+System.setProperty("org.gradle.java.home", "/usr/lib/jvm/java-17-openjdk-amd64")
+
+System.setProperty("org.gradle.java.home", "/usr/lib/jvm/java-17-openjdk-amd64")

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class FlightLogViewModel(private val repository: FlightRepository) : ViewModel() {
+open class FlightLogViewModel(private val repository: FlightRepository) : ViewModel() {
 
     private val _ognFlights = MutableStateFlow<List<OgnFlight>>(emptyList())
     val ognFlights: StateFlow<List<OgnFlight>> = _ognFlights
@@ -31,7 +31,7 @@ class FlightLogViewModel(private val repository: FlightRepository) : ViewModel()
         }
     }
 
-    fun deleteFlight(flight: Flight) {
+    open fun deleteFlight(flight: Flight) {
         viewModelScope.launch {
             repository.delete(flight)
         }

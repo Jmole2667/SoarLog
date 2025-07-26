@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.unit.dp
 import com.soarlog.app.models.Flight
+import com.soarlog.app.repository.FlightRepository
 import com.soarlog.app.viewmodel.FlightLogViewModel
 import java.util.Date
 
@@ -136,7 +137,8 @@ fun FlightListScreenPreview() {
         Flight(1, "G-ABCD", null, null, "K21", "Lasham", "Lasham", "Winch", 60, Date()),
         Flight(2, "G-EFGH", null, null, "Astir", "Lasham", "Lasham", "Aerotow", 120, Date())
     )
-    FlightListScreen(flights, viewModel = object : FlightLogViewModel(repository = null) {
+    val repository = FakeFlightRepository(null, null)
+    FlightListScreen(flights, viewModel = object : FlightLogViewModel(repository) {
         override fun deleteFlight(flight: Flight) {}
     })
 }
