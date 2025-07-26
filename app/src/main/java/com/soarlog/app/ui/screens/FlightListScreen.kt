@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -29,7 +30,7 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FlightListScreen(flights: List<Flight>) {
+fun FlightListScreen(flights: List<Flight>, viewModel: FlightLogViewModel) {
     var sortOrder by remember { mutableStateOf(SortOrder.Date) }
     val sortedFlights = when (sortOrder) {
         SortOrder.Date -> flights.sortedByDescending { it.date }
@@ -53,7 +54,7 @@ fun FlightListScreen(flights: List<Flight>) {
                 .padding(paddingValues)
         ) {
             items(sortedFlights) { flight ->
-                FlightListItem(flight)
+                FlightListItem(flight, onDelete = { viewModel.deleteFlight(flight) })
             }
         }
     }
@@ -102,16 +103,27 @@ enum class SortOrder {
 }
 
 @Composable
-fun FlightListItem(flight: Flight) {
+fun FlightListItem(flight: Flight, onDelete: () -> Unit) {
     Card(
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(text = "Registration: ${flight.registration}")
+            Text(text = "P2: ${flight.p2}")
+            Text(text = "Notes: ${flight.notes}")
             Text(text = "Glider Type: ${flight.gliderType}")
+            Text(text = "Takeoff: ${flight.takeoff}")
+            Text(text = "Landing: ${flight.landing}")
+            Text(text = "Launch Type: ${flight.launchType}")
             Text(text = "Duration: ${flight.duration} minutes")
+            Text(text = "Date: ${flight.date}")
+            IconButton(onClick = onDelete) {
+                Icon(Icons.Default.Delete, contentDescription = "Delete")
+            }
         }
     }
 }

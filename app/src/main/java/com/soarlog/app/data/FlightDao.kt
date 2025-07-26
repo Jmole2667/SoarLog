@@ -13,4 +13,7 @@ interface FlightDao {
 
     @Insert
     suspend fun insert(flight: Flight)
+
+    @Delete
+    suspend fun delete(flight: Flight)
 }

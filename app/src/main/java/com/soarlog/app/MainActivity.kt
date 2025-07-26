@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
                 ) { paddingValues ->
                     NavHost(
                         navController = navController,
-                        startDestination = "logbook",
+                        startDestination = "flight-list",
                         modifier = Modifier.padding(paddingValues)
                     ) {
                         composable("logbook") {
@@ -134,32 +134,7 @@ fun FlightLogForm(
                 }
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                val flight = Flight(
-                    registration = flightRegistration,
-                    p2 = p2,
-                    notes = notes,
-                    gliderType = gliderType,
-                    takeoff = takeoff,
-                    landing = landing,
-                    launchType = launchType,
-                    duration = duration.toLongOrNull() ?: 0,
-                    date = Date()
-                )
-                viewModel.insertFlight(flight)
-                flightRegistration = ""
-                p2 = ""
-                notes = ""
-                gliderType = ""
-                takeoff = ""
-                landing = ""
-                launchType = ""
-                duration = ""
-            }) {
-                Icon(Icons.Default.Add, contentDescription = "Log Flight")
-            }
-        }
+        floatingActionButton = {}
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -228,6 +203,31 @@ fun FlightLogForm(
                 label = { Text("Duration (minutes)") },
                 modifier = Modifier.fillMaxWidth()
             )
+
+            Button(onClick = {
+                val flight = Flight(
+                    registration = flightRegistration,
+                    p2 = p2,
+                    notes = notes,
+                    gliderType = gliderType,
+                    takeoff = takeoff,
+                    landing = landing,
+                    launchType = launchType,
+                    duration = duration.toLongOrNull() ?: 0,
+                    date = Date()
+                )
+                viewModel.insertFlight(flight)
+                flightRegistration = ""
+                p2 = ""
+                notes = ""
+                gliderType = ""
+                takeoff = ""
+                landing = ""
+                launchType = ""
+                duration = ""
+            }) {
+                Text("Save")
+            }
 
             flights.firstOrNull()?.let { flight ->
                 gliderType = flight.gliderType

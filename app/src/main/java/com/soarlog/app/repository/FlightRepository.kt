@@ -21,4 +21,8 @@ class FlightRepository(
     suspend fun insert(flight: Flight) {
         flightDao.insert(flight)
     }
+
+    suspend fun delete(flight: Flight) {
+        flightDao.delete(flight)
+    }
 }

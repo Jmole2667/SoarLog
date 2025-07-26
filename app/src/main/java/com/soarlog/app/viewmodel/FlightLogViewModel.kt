@@ -30,4 +30,10 @@ class FlightLogViewModel(private val repository: FlightRepository) : ViewModel()
             repository.insert(flight)
         }
     }
+
+    fun deleteFlight(flight: Flight) {
+        viewModelScope.launch {
+            repository.delete(flight)
+        }
+    }
 }
