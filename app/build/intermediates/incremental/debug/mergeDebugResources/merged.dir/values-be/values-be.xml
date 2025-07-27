@@ -9,12 +9,9 @@
     <string msgid="59049573811482460" name="call_notification_screening_text">"Фільтраванне ўваходнага выкліку"</string>
     <string msgid="406453423630273620" name="close_drawer">"Закрыць меню навігацыі"</string>
     <string msgid="7573152094250666567" name="close_sheet">"Закрыць аркуш"</string>
-    <string msgid="5389587048670450460" name="collapsed">"Згорнута"</string>
     <string msgid="8038256446254964252" name="default_error_message">"Памылка ўводу"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Усплывальнае акно"</string>
-    <string msgid="4057925834421392736" name="dialog">"Дыялогавае акно"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Выпадное меню"</string>
-    <string msgid="5974471714631304645" name="expanded">"Разгорнута"</string>
     <string msgid="6827826412747255547" name="in_progress">"У працэсе"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Выбрана часткова"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Згарнуць ніжні аркуш"</string>

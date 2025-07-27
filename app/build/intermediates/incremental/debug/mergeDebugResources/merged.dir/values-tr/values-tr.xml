@@ -9,12 +9,9 @@
     <string msgid="59049573811482460" name="call_notification_screening_text">"Gelen arama süzülüyor"</string>
     <string msgid="406453423630273620" name="close_drawer">"Gezinme menüsünü kapat"</string>
     <string msgid="7573152094250666567" name="close_sheet">"Sayfayı kapat"</string>
-    <string msgid="5389587048670450460" name="collapsed">"Daraltılmış"</string>
     <string msgid="8038256446254964252" name="default_error_message">"Geçersiz giriş"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Pop-up Pencere"</string>
-    <string msgid="4057925834421392736" name="dialog">"İletişim kutusu"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Açılır menü"</string>
-    <string msgid="5974471714631304645" name="expanded">"Genişletilmiş"</string>
     <string msgid="6827826412747255547" name="in_progress">"Devam ediyor"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Kısmi olarak kontrol edildi"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Alt sayfayı daralt"</string>

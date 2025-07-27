@@ -9,12 +9,9 @@
     <string msgid="59049573811482460" name="call_notification_screening_text">"Келген қоңырауды сүзу"</string>
     <string msgid="406453423630273620" name="close_drawer">"Навигация мәзірін жабу"</string>
     <string msgid="7573152094250666567" name="close_sheet">"Парақты жабу"</string>
-    <string msgid="5389587048670450460" name="collapsed">"Жиылды"</string>
     <string msgid="8038256446254964252" name="default_error_message">"Енгізілген мән жарамсыз."</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Қалқымалы терезе"</string>
-    <string msgid="4057925834421392736" name="dialog">"Диалогтік терезе"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Ашылмалы мәзір"</string>
-    <string msgid="5974471714631304645" name="expanded">"Жайылды"</string>
     <string msgid="6827826412747255547" name="in_progress">"Орындалуда"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Жартылай белгіленді."</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Төменгі парақшаны жию"</string>

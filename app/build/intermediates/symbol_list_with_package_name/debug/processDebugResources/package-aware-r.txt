@@ -201,12 +201,9 @@ string call_notification_ongoing_text
 string call_notification_screening_text
 string close_drawer
 string close_sheet
-string collapsed
 string default_error_message
 string default_popup_window_title
-string dialog
 string dropdown_menu
-string expanded
 string in_progress
 string indeterminate
 string m3c_bottom_sheet_collapse_description

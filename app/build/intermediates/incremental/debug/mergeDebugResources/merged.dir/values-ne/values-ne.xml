@@ -9,12 +9,9 @@
     <string msgid="59049573811482460" name="call_notification_screening_text">"आगमन कल जाँचिँदै छ"</string>
     <string msgid="406453423630273620" name="close_drawer">"नेभिगेसन मेनु बन्द गर्नुहोस्"</string>
     <string msgid="7573152094250666567" name="close_sheet">"पाना बन्द गर्नुहोस्"</string>
-    <string msgid="5389587048670450460" name="collapsed">"कोल्याप्स गरियो"</string>
     <string msgid="8038256446254964252" name="default_error_message">"अवैद्य इन्पुट"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"पपअप विन्डो"</string>
-    <string msgid="4057925834421392736" name="dialog">"डायलग"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"ड्रपडाउन मेनु"</string>
-    <string msgid="5974471714631304645" name="expanded">"एक्स्पान्ड गरियो"</string>
     <string msgid="6827826412747255547" name="in_progress">"काम हुँदै छ"</string>
     <string msgid="7933458017204019916" name="indeterminate">"आंशिक रूपमा जाँच गरिएको"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"पुछारको पाना कोल्याप्स गर्नुहोस्"</string>

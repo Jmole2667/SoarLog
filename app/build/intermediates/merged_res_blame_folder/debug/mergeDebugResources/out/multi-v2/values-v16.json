@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.soarlog.app-mergeDebugResources-54:/values-v16/values-v16.xml",
+            "outputFile": "com.soarlog.app-mergeDebugResources-53:/values-v16/values-v16.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Jackm\\.gradle\\caches\\8.14.2\\transforms\\d64aa4cc3cea3cf5ea91ea3e8c3c563e\\transformed\\core-1.12.0\\res\\values-v16\\values-v16.xml",
