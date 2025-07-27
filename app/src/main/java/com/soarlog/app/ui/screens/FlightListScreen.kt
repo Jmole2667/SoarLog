@@ -48,8 +48,8 @@ import java.util.Locale
 fun FlightListScreen(flights: List<Flight>, viewModel: FlightLogViewModel) {
     var sortOrder by remember { mutableStateOf(SortOrder.Date) }
     val sortedFlights = when (sortOrder) {
-        SortOrder.Date -> flights.sortedByDescending { it.date }
-        SortOrder.Duration -> flights.sortedByDescending { it.duration }
+        SortOrder.Date -> flights.sortedBy { it.date }
+        SortOrder.Duration -> flights.sortedBy { it.duration }
         SortOrder.GliderType -> flights.sortedBy { it.gliderType }
     }
 
