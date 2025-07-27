@@ -22,6 +22,11 @@ fun FlightsByGliderChart(flights: List<Flight>) {
             data = BarData(dataSet)
             description.isEnabled = false
             setFitBars(true)
+
+            // Enable axis lines
+            axisLeft.setDrawAxisLine(true)
+            xAxis.setDrawAxisLine(true)
+
             invalidate()
         }
     })
