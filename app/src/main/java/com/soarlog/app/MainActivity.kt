@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,8 +44,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.soarlog.app.ui.screens.FlightListScreen
 import com.soarlog.app.ui.screens.StatisticsScreen
-import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import com.soarlog.app.viewmodel.FlightLogViewModelFactory
@@ -70,12 +72,12 @@ class MainActivity : ComponentActivity() {
                                 onClick = { navController.navigate("flight-list") }
                             )
                             NavigationBarItem(
-                                icon = { Icon(Icons.Default.Create, contentDescription = "Log Flight") },
+                                icon = { Icon(Icons.Default.Add, contentDescription = "Log Flight") },
                                 selected = false,
                                 onClick = { navController.navigate("logbook") }
                             )
                             NavigationBarItem(
-                                icon = { Icon(Icons.Default.Star, contentDescription = "Statistics") },
+                                icon = { Icon(Icons.Default.BarChart, contentDescription = "Statistics") },
                                 selected = false,
                                 onClick = { navController.navigate("statistics") }
                             )
@@ -136,12 +138,13 @@ fun FlightLogForm(
         },
         floatingActionButton = {}
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp)
         ) {
+            item {
             Text(
                 text = "Auto",
                 style = MaterialTheme.typography.headlineMedium
@@ -237,6 +240,7 @@ fun FlightLogForm(
                 duration = flight.duration.toString()
             }
         }
+    }
     }
 }
 
