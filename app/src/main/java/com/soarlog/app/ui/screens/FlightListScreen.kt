@@ -1,7 +1,11 @@
 package com.soarlog.app.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -30,7 +34,9 @@ import com.soarlog.app.models.Flight
 import com.soarlog.app.repository.FakeFlightRepository
 import com.soarlog.app.repository.FlightRepository
 import com.soarlog.app.viewmodel.FlightLogViewModel
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -116,15 +122,26 @@ fun FlightListItem(flight: Flight, onDelete: () -> Unit) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(text = "Registration: ${flight.registration}")
-            Text(text = "P2: ${flight.p2}")
-            Text(text = "Notes: ${flight.notes}")
-            Text(text = "Glider Type: ${flight.gliderType}")
-            Text(text = "Takeoff: ${flight.takeoff}")
-            Text(text = "Landing: ${flight.landing}")
-            Text(text = "Launch Type: ${flight.launchType}")
-            Text(text = "Duration: ${flight.duration} minutes")
-            Text(text = "Date: ${flight.date}")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = "Registration: ${flight.registration}")
+                Text(text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(flight.date))
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                flight.gliderType?.let { Text(text = "Glider Type: $it") }
+                Text(text = "Duration: ${flight.duration} minutes")
+            }
+            flight.p2?.let { Text(text = "P2: $it") }
+            flight.takeoff?.let { Text(text = "Takeoff: $it") }
+            flight.landing?.let { Text(text = "Landing: $it") }
+            flight.launchType?.let { Text(text = "Launch Type: $it") }
+            flight.notes?.let { Text(text = "Notes: $it") }
             IconButton(onClick = onDelete) {
                 Icon(Icons.Default.Delete, contentDescription = "Delete")
             }
