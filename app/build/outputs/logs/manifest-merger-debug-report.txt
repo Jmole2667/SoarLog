@@ -50,6 +50,7 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1] C:\Users\Jack
 MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.6.1] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\151a16417f6ad16add1c947b961a3c9c\transformed\lifecycle-runtime-ktx-2.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\8ba1cac4c8b9710962e4d0f0412a5c02\transformed\runtime-saveable-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.runtime:runtime-android:1.6.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\0320c71d06b21f1d17ca4812ada9eafb\transformed\runtime-release\AndroidManifest.xml:2:1-7:12
+MERGED from [com.github.PhilJay:MPAndroidChart:v3.1.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\da18cdac6bb3835621c814c74fa20d55\transformed\MPAndroidChart-v3.1.0\AndroidManifest.xml:2:1-20:12
 MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\2859444420cd689aa20434c4b34adf49\transformed\annotation-experimental-1.4.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.sqlite:sqlite-framework:2.3.1] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\022e489f7b5722352f70eedd88256284\transformed\sqlite-framework-2.3.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.sqlite:sqlite:2.3.1] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\bfa23e2e1ebbfbce95dd37eb6a748bb3\transformed\sqlite-2.3.1\AndroidManifest.xml:17:1-22:12
@@ -228,6 +229,8 @@ MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.0] C:\Users\J
 MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\8ba1cac4c8b9710962e4d0f0412a5c02\transformed\runtime-saveable-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.runtime:runtime-android:1.6.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\0320c71d06b21f1d17ca4812ada9eafb\transformed\runtime-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.runtime:runtime-android:1.6.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\0320c71d06b21f1d17ca4812ada9eafb\transformed\runtime-release\AndroidManifest.xml:5:5-44
+MERGED from [com.github.PhilJay:MPAndroidChart:v3.1.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\da18cdac6bb3835621c814c74fa20d55\transformed\MPAndroidChart-v3.1.0\AndroidManifest.xml:16:5-18:41
+MERGED from [com.github.PhilJay:MPAndroidChart:v3.1.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\da18cdac6bb3835621c814c74fa20d55\transformed\MPAndroidChart-v3.1.0\AndroidManifest.xml:16:5-18:41
 MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\2859444420cd689aa20434c4b34adf49\transformed\annotation-experimental-1.4.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\2859444420cd689aa20434c4b34adf49\transformed\annotation-experimental-1.4.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.sqlite:sqlite-framework:2.3.1] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\022e489f7b5722352f70eedd88256284\transformed\sqlite-framework-2.3.1\AndroidManifest.xml:20:5-44

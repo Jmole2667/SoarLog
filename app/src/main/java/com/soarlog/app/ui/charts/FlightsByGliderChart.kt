@@ -11,7 +11,7 @@ import com.soarlog.app.models.Flight
 @Composable
 fun FlightsByGliderChart(flights: List<Flight>) {
     val flightsByGlider = flights.groupBy { it.gliderType }
-    val entries = flightsByGlider.mapIndexed { index, entry ->
+    val entries = flightsByGlider.entries.mapIndexed { index, entry ->
         BarEntry(index.toFloat(), entry.value.size.toFloat())
     }
 
