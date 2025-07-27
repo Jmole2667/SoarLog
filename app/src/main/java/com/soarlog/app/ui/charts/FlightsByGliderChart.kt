@@ -17,17 +17,20 @@ fun FlightsByGliderChart(flights: List<Flight>) {
 
     val dataSet = BarDataSet(entries, "Flights by Glider")
 
-    AndroidView(factory = { context ->
-        BarChart(context).apply {
-            data = BarData(dataSet)
-            description.isEnabled = false
-            setFitBars(true)
-
-            // Enable axis lines
-            axisLeft.setDrawAxisLine(true)
-            xAxis.setDrawAxisLine(true)
-
-            invalidate()
+    AndroidView(
+        factory = { context ->
+            BarChart(context).apply {
+                description.isEnabled = false
+                setFitBars(true)
+                axisLeft.setDrawAxisLine(true)
+                xAxis.setDrawAxisLine(true)
+                xAxis.valueFormatter = com.github.mikephil.charting.formatter.IndexAxisValueFormatter(flightsByGlider.keys.toList())
+            }
+        },
+        update = { chart ->
+            val dataSet = BarDataSet(entries, "Flights by Glider")
+            chart.data = BarData(dataSet)
+            chart.invalidate()
         }
-    })
+    )
 }
