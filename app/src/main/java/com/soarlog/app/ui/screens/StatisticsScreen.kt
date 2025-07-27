@@ -13,6 +13,7 @@ import com.soarlog.app.models.Flight
 import androidx.compose.material3.Card
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.unit.dp
+import com.soarlog.app.ui.charts.FlightsByGliderChart
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,14 +40,9 @@ fun StatisticsScreen(flights: List<Flight>) {
                 ) {
                     Text(text = "Total Flights: ${flights.size}")
                     Text(text = "Total Duration: ${flights.sumOf { it.duration }} minutes")
-
-                    val flightsByGlider = flights.groupBy { it.gliderType }
-                    flightsByGlider.forEach { (gliderType, flights) ->
-                        Text(text = "Flights with $gliderType: ${flights.size}")
-                        Text(text = "Total duration with $gliderType: ${flights.sumOf { it.duration }} minutes")
-                    }
                 }
             }
+            FlightsByGliderChart(flights = flights)
         }
     }
 }

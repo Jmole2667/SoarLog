@@ -50,9 +50,6 @@ android {
     }
 }
 // You can also place it here if not directly tied to Android plugin specifics
-kotlin {
-    jvmToolchain(17)
-}
 dependencies {
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -89,4 +86,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Charts
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
