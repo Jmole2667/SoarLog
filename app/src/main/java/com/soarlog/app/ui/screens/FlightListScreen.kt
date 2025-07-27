@@ -126,14 +126,17 @@ fun FlightListItem(flight: Flight, onDelete: () -> Unit, flightNumber: Int) {
             .fillMaxWidth()
     ) {
         Row(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "$flightNumber.",
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(end = 16.dp)
             )
-            Column {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -144,24 +147,17 @@ fun FlightListItem(flight: Flight, onDelete: () -> Unit, flightNumber: Int) {
                     )
                     Text(text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(flight.date))
                 }
-            Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-            flight.gliderType?.let { if (it.isNotBlank()) Text(text = "Type: $it") }
-            flight.takeoff?.let { if (it.isNotBlank()) Text(text = "Takeoff: $it") }
-            flight.landing?.let { if (it.isNotBlank()) Text(text = "Landing: $it") }
-            flight.launchType?.let { if (it.isNotBlank()) Text(text = "Launch Type: $it") }
-            if (flight.duration > 0) Text(text = "Duration: ${flight.duration} minutes")
-            flight.notes?.let { if (it.isNotBlank()) Text(text = "Notes: $it") }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    onClick = { showDialog = true },
-                ) {
-                    Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.Red)
-                }
+                flight.gliderType?.let { if (it.isNotBlank()) Text(text = "Type: $it") }
+                flight.takeoff?.let { if (it.isNotBlank()) Text(text = "Takeoff: $it") }
+                flight.landing?.let { if (it.isNotBlank()) Text(text = "Landing: $it") }
+                flight.launchType?.let { if (it.isNotBlank()) Text(text = "Launch Type: $it") }
+                if (flight.duration > 0) Text(text = "Duration: ${flight.duration} minutes")
+                flight.notes?.let { if (it.isNotBlank()) Text(text = "Notes: $it") }
+            }
+            IconButton(onClick = { showDialog = true }) {
+                Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.Red)
             }
         }
     }

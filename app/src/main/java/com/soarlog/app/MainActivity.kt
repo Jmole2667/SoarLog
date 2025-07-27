@@ -72,7 +72,11 @@ class MainActivity : ComponentActivity() {
                                 onClick = { navController.navigate("flight-list") }
                             )
                             NavigationBarItem(
-                                icon = { Icon(Icons.Default.Add, contentDescription = "Log Flight") },
+                                icon = {
+                                    FloatingActionButton(onClick = { navController.navigate("logbook") }) {
+                                        Icon(Icons.Default.Add, contentDescription = "Log Flight")
+                                    }
+                                 },
                                 selected = false,
                                 onClick = { navController.navigate("logbook") }
                             )
