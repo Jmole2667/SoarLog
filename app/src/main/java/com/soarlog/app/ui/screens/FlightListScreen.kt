@@ -23,7 +23,11 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
@@ -46,10 +50,20 @@ import java.util.Locale
 @Composable
 fun FlightListScreen(flights: List<Flight>, viewModel: FlightLogViewModel) {
     var sortOrder by remember { mutableStateOf(SortOrder.Date) }
+    var selectedDate by remember { mutableStateOf<Date?>(null) }
+    var showDatePicker by remember { mutableStateOf(false) }
+
+    val filteredFlights = selectedDate?.let { date ->
+        flights.filter { flight ->
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            sdf.format(flight.date) == sdf.format(date)
+        }
+    } ?: flights
+
     val sortedFlights = when (sortOrder) {
-        SortOrder.Date -> flights.sortedByDescending { it.date }
-        SortOrder.Duration -> flights.sortedByDescending { it.duration }
-        SortOrder.GliderType -> flights.sortedBy { it.gliderType }
+        SortOrder.Date -> filteredFlights.sortedByDescending { it.date }
+        SortOrder.Duration -> filteredFlights.sortedByDescending { it.duration }
+        SortOrder.GliderType -> filteredFlights.sortedBy { it.gliderType }
     }
 
     Scaffold(
@@ -57,6 +71,9 @@ fun FlightListScreen(flights: List<Flight>, viewModel: FlightLogViewModel) {
             TopAppBar(
                 title = { Text("Flights") },
                 actions = {
+                    Button(onClick = { showDatePicker = true }) {
+                        Text(text = selectedDate?.let { SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it) } ?: "Select Date")
+                    }
                     SortMenu(onSortOrderChange = { sortOrder = it })
                 }
             )
@@ -70,6 +87,36 @@ fun FlightListScreen(flights: List<Flight>, viewModel: FlightLogViewModel) {
             items(sortedFlights.withIndex().toList()) { (index, flight) ->
                 FlightListItem(flight, onDelete = { viewModel.deleteFlight(flight) }, flightNumber = index + 1)
             }
+        }
+    }
+
+    if (showDatePicker) {
+        val datePickerState = rememberDatePickerState(
+            initialSelectedDateMillis = selectedDate?.time ?: System.currentTimeMillis()
+        )
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        selectedDate = datePickerState.selectedDateMillis?.let { Date(it) }
+                        showDatePicker = false
+                    }
+                ) {
+                    Text("OK")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showDatePicker = false
+                    }
+                ) {
+                    Text("Cancel")
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
         }
     }
 }
@@ -125,19 +172,25 @@ fun FlightListItem(flight: Flight, onDelete: () -> Unit, flightNumber: Int) {
             .padding(8.dp)
             .fillMaxWidth()
     ) {
-        Column(
+        Row(
             modifier = Modifier.padding(16.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "$flightNumber. ${flight.registration}",
-                    fontWeight = FontWeight.Bold
-                )
-                Text(text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(flight.date))
-            }
+            Text(
+                text = "$flightNumber.",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(end = 16.dp)
+            )
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = flight.registration,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(flight.date))
+                }
             Spacer(modifier = Modifier.height(8.dp))
 
             flight.gliderType?.let { if (it.isNotBlank()) Text(text = "Type: $it") }
@@ -149,9 +202,11 @@ fun FlightListItem(flight: Flight, onDelete: () -> Unit, flightNumber: Int) {
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.Center
             ) {
-                IconButton(onClick = { showDialog = true }) {
+                Button(
+                    onClick = { showDialog = true },
+                ) {
                     Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.Red)
                 }
             }
