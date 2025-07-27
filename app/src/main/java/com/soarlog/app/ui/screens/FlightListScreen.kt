@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -24,6 +26,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -63,8 +67,8 @@ fun FlightListScreen(flights: List<Flight>, viewModel: FlightLogViewModel) {
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            items(sortedFlights) { flight ->
-                FlightListItem(flight, onDelete = { viewModel.deleteFlight(flight) })
+            items(sortedFlights.withIndex().toList()) { (index, flight) ->
+                FlightListItem(flight, onDelete = { viewModel.deleteFlight(flight) }, flightNumber = index + 1)
             }
         }
     }
@@ -113,7 +117,9 @@ enum class SortOrder {
 }
 
 @Composable
-fun FlightListItem(flight: Flight, onDelete: () -> Unit) {
+fun FlightListItem(flight: Flight, onDelete: () -> Unit, flightNumber: Int) {
+    var showDialog by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier
             .padding(8.dp)
@@ -126,26 +132,53 @@ fun FlightListItem(flight: Flight, onDelete: () -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Registration: ${flight.registration}")
+                Text(
+                    text = "$flightNumber. ${flight.registration}",
+                    fontWeight = FontWeight.Bold
+                )
                 Text(text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(flight.date))
             }
             Spacer(modifier = Modifier.height(8.dp))
+
+            flight.gliderType?.let { if (it.isNotBlank()) Text(text = "Type: $it") }
+            flight.takeoff?.let { if (it.isNotBlank()) Text(text = "Takeoff: $it") }
+            flight.landing?.let { if (it.isNotBlank()) Text(text = "Landing: $it") }
+            flight.launchType?.let { if (it.isNotBlank()) Text(text = "Launch Type: $it") }
+            if (flight.duration > 0) Text(text = "Duration: ${flight.duration} minutes")
+            flight.notes?.let { if (it.isNotBlank()) Text(text = "Notes: $it") }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.End
             ) {
-                flight.gliderType?.let { Text(text = "Glider Type: $it") }
-                Text(text = "Duration: ${flight.duration} minutes")
-            }
-            flight.p2?.let { Text(text = "P2: $it") }
-            flight.takeoff?.let { Text(text = "Takeoff: $it") }
-            flight.landing?.let { Text(text = "Landing: $it") }
-            flight.launchType?.let { Text(text = "Launch Type: $it") }
-            flight.notes?.let { Text(text = "Notes: $it") }
-            IconButton(onClick = onDelete) {
-                Icon(Icons.Default.Delete, contentDescription = "Delete")
+                IconButton(onClick = { showDialog = true }) {
+                    Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.Red)
+                }
             }
         }
+    }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("Delete Flight") },
+            text = { Text("Are you sure you want to delete this flight log?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onDelete()
+                        showDialog = false
+                    }
+                ) {
+                    Text("Confirm")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 }
 
