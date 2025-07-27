@@ -20,7 +20,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -127,6 +131,8 @@ fun FlightLogForm(
     var landing by remember { mutableStateOf("") }
     var launchType by remember { mutableStateOf("") }
     var duration by remember { mutableStateOf("") }
+    var selectedDate by remember { mutableStateOf<Date>(Date()) }
+    var showDatePicker by remember { mutableStateOf(false) }
     val flights by viewModel.allFlights.collectAsState(initial = emptyList())
 
     Scaffold(
@@ -211,6 +217,40 @@ fun FlightLogForm(
                 modifier = Modifier.fillMaxWidth()
             )
 
+            Button(onClick = { showDatePicker = true }) {
+                Text(text = "Select Date: ${selectedDate.toFormattedString()}")
+            }
+
+            if (showDatePicker) {
+                val datePickerState = rememberDatePickerState(
+                    initialSelectedDateMillis = selectedDate.time
+                )
+                DatePickerDialog(
+                    onDismissRequest = { showDatePicker = false },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                selectedDate = datePickerState.selectedDateMillis?.let { Date(it) } ?: selectedDate
+                                showDatePicker = false
+                            }
+                        ) {
+                            Text("OK")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = {
+                                showDatePicker = false
+                            }
+                        ) {
+                            Text("Cancel")
+                        }
+                    }
+                ) {
+                    DatePicker(state = datePickerState)
+                }
+            }
+
             Button(onClick = {
                 val flight = Flight(
                     registration = flightRegistration,
@@ -221,7 +261,7 @@ fun FlightLogForm(
                     landing = landing,
                     launchType = launchType,
                     duration = duration.toLongOrNull() ?: 0,
-                    date = Date()
+                    date = selectedDate
                 )
                 viewModel.insertFlight(flight)
                 flightRegistration = ""
@@ -246,6 +286,11 @@ fun FlightLogForm(
         }
     }
     }
+}
+
+fun Date.toFormattedString(): String {
+    val sdf = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+    return sdf.format(this)
 }
 
 @Preview(showBackground = true)
