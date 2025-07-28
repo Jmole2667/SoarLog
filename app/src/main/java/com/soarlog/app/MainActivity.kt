@@ -159,14 +159,40 @@ fun FlightLogForm(
                     text = "Auto",
                     style = MaterialTheme.typography.headlineMedium
                 )
-                OutlinedTextField(
-                    value = flightRegistration,
-                    onValueChange = { flightRegistration = it },
-                    label = { Text("Flight Registration") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Button(onClick = {  }) {
-                    Text("Search")
+                var expanded by remember { mutableStateOf(false) }
+                val ognFlights by viewModel.ognFlights.collectAsState(initial = emptyList())
+
+                Box {
+                    OutlinedTextField(
+                        value = flightRegistration,
+                        onValueChange = {
+                            flightRegistration = it
+                            expanded = it.isNotEmpty()
+                            if (it.isNotEmpty()) {
+                                viewModel.searchFlights(it)
+                            }
+                        },
+                        label = { Text("Flight Registration") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        ognFlights.forEach { flight ->
+                            DropdownMenuItem(
+                                text = { Text(flight.registration) },
+                                onClick = {
+                                    flightRegistration = flight.registration
+                                    gliderType = flight.gliderType
+                                    takeoff = flight.takeoff
+                                    landing = flight.landing
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
                 }
                 OutlinedTextField(
                     value = p2,

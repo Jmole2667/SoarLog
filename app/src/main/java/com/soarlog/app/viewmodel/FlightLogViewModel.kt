@@ -19,9 +19,13 @@ open class FlightLogViewModel(private val repository: FlightRepository) : ViewMo
     val allFlights: StateFlow<List<Flight>> = repository.getAllFlights()
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    fun getOgnFlights(registration: String) {
+    fun searchFlights(registration: String) {
         viewModelScope.launch {
-            _ognFlights.value = repository.getFlights(registration)
+            try {
+                _ognFlights.value = repository.getFlights(registration)
+            } catch (e: Exception) {
+                // Handle error
+            }
         }
     }
 

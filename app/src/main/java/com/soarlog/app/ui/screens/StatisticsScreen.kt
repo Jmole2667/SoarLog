@@ -17,7 +17,7 @@ fun StatisticsScreen(flights: List<Flight>) {
     val totalDuration = flights.sumOf { it.duration }
     val averageDuration = if (totalFlights > 0) totalDuration / totalFlights else 0
     val longestFlight = flights.maxByOrNull { it.duration }
-    val mostFrequentAircraft = flights.groupBy { it.aircraftType }
+    val mostFrequentAircraft = flights.groupBy { it.gliderType }
         .maxByOrNull { it.value.size }?.key
 
     Scaffold(
