@@ -1,5 +1,6 @@
 package com.soarlog.app.ui.charts
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,7 +22,9 @@ fun FlightsByGliderChart(flights: List<Flight>) {
     val dataSet = BarDataSet(entries, "Flights by Glider")
 
     AndroidView(
-        modifier = Modifier.height(300.dp),
+        modifier = Modifier
+            .height(300.dp)
+            .fillMaxWidth(),
         factory = { context ->
             BarChart(context).apply {
                 description.isEnabled = false
