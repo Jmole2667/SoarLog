@@ -1,26 +1,24 @@
 package com.soarlog.app.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.soarlog.app.models.Flight
-import com.soarlog.app.ui.charts.FlightsByMonthChart
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatisticsScreen(flights: List<Flight>) {
-    val years = flights.map {
-        val calendar = Calendar.getInstance()
-        calendar.time = it.date
-        calendar.get(Calendar.YEAR)
-    }.distinct().sortedDescending()
 
-    var selectedYear by remember { mutableStateOf(years.firstOrNull()) }
+    val totalFlights = flights.size
+    val totalDuration = flights.sumOf { it.duration }
+    val averageDuration = if (totalFlights > 0) totalDuration / totalFlights else 0
+    val longestFlight = flights.maxByOrNull { it.duration }
+    val mostFrequentAircraft = flights.groupBy { it.aircraftType }
+        .maxByOrNull { it.value.size }?.key
 
     Scaffold(
         topBar = {
@@ -29,87 +27,42 @@ fun StatisticsScreen(flights: List<Flight>) {
             )
         }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            Card(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth()
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(text = "Total Flights: ${flights.size}")
-                    Text(text = "Total Duration: ${flights.sumOf { it.duration }} minutes")
-                }
+            item {
+                StatisticCard("Total Flights", totalFlights.toString())
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            if (selectedYear != null) {
-                YearSelector(
-                    years = years,
-                    selectedYear = selectedYear!!,
-                    onYearSelected = { selectedYear = it }
-                )
-                FlightsByMonthChart(
-                    flights = flights,
-                    year = selectedYear!!,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            } else {
-                Text("No flights recorded yet.")
+            item {
+                StatisticCard("Total Duration", "$totalDuration minutes")
+            }
+            item {
+                StatisticCard("Average Duration", "$averageDuration minutes")
+            }
+            item {
+                StatisticCard("Longest Flight", longestFlight?.duration?.toString()?.let { "$it minutes" } ?: "N/A")
+            }
+            item {
+                StatisticCard("Most Frequent Aircraft", mostFrequentAircraft ?: "N/A")
             }
         }
     }
 }
 
 @Composable
-fun YearSelector(
-    years: List<Int>,
-    selectedYear: Int,
-    onYearSelected: (Int) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    Box(
+fun StatisticCard(title: String, value: String) {
+    Card(
         modifier = Modifier
+            .padding(8.dp)
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
     ) {
-        OutlinedTextField(
-            value = selectedYear.toString(),
-            onValueChange = {},
-            readOnly = true,
-            label = { Text("Year") },
-            trailingIcon = {
-                IconButton(onClick = { expanded = true }) {
-                    Icon(Icons.Default.ArrowDropDown, contentDescription = "Dropdown")
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier.padding(16.dp)
         ) {
-            years.forEach { year ->
-                DropdownMenuItem(
-                    text = { Text(year.toString()) }, // Pass the Text composable to the 'text' parameter
-                    onClick = {
-                        onYearSelected(year)
-                        expanded = false
-                    }
-                    // You can add other parameters here if needed, like leadingIcon, etc.
-                )
-            }
-            }
+            Text(text = title, style = MaterialTheme.typography.titleMedium)
+            Text(text = value, style = MaterialTheme.typography.bodyLarge)
         }
     }
+}
