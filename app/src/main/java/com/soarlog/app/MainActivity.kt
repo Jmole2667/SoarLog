@@ -3,57 +3,58 @@ package com.soarlog.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.Button
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.activity.viewModels
-import androidx.compose.material3.Button
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.soarlog.app.data.AppDatabase
-import com.soarlog.app.network.RetrofitInstance
-import com.soarlog.app.repository.FlightRepository
-import com.soarlog.app.ui.theme.SoarLogTheme
-import com.soarlog.app.viewmodel.FlightLogViewModel
-import com.soarlog.app.models.Flight
-import java.util.Date
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.soarlog.app.data.AppDatabase
+import com.soarlog.app.models.Flight
+import com.soarlog.app.network.RetrofitInstance
+import com.soarlog.app.repository.FlightRepository
 import com.soarlog.app.ui.screens.FlightListScreen
 import com.soarlog.app.ui.screens.StatisticsScreen
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDatePickerState
+import com.soarlog.app.ui.theme.SoarLogTheme
+import com.soarlog.app.viewmodel.FlightLogViewModel
 import com.soarlog.app.viewmodel.FlightLogViewModelFactory
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
@@ -61,11 +62,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val database = AppDatabase.getDatabase(this)
         val repository = FlightRepository(RetrofitInstance.api, database.flightDao())
-        val viewModel by viewModels<FlightLogViewModel> {
-            FlightLogViewModelFactory(repository)
-        }
+        val viewModelFactory = FlightLogViewModelFactory(repository)
         setContent {
             SoarLogTheme {
+                val viewModel: FlightLogViewModel = viewModel(factory = viewModelFactory)
                 val navController = rememberNavController()
                 Scaffold(
                     bottomBar = {
@@ -133,7 +133,6 @@ fun FlightLogForm(
     var duration by remember { mutableStateOf("") }
     var selectedDate by remember { mutableStateOf<Date>(Date()) }
     var showDatePicker by remember { mutableStateOf(false) }
-    val flights by viewModel.allFlights.collectAsState(initial = emptyList())
 
     Scaffold(
         topBar = {
