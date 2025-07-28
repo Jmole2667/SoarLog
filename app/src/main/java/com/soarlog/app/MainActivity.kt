@@ -166,7 +166,7 @@ fun FlightLogForm(
                     OutlinedTextField(
                         value = flightRegistration,
                         onValueChange = {
-                            flightRegistration = it
+                            flightRegistration = it.uppercase()
                             expanded = it.isNotEmpty()
                             if (it.isNotEmpty()) {
                                 viewModel.searchFlights(it)
