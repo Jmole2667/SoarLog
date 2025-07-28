@@ -184,9 +184,9 @@ fun FlightLogForm(
                                 text = { Text(flight.registration) },
                                 onClick = {
                                     flightRegistration = flight.registration
-                                    gliderType = flight.gliderType
-                                    takeoff = flight.takeoff
-                                    landing = flight.landing
+                                    gliderType = flight.aircraftModel
+                                    takeoff = Date(flight.takeoffTs * 1000).toFormattedString()
+                                    landing = Date(flight.landingTs * 1000).toFormattedString()
                                     expanded = false
                                 }
                             )
