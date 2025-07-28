@@ -40,7 +40,9 @@ fun StatisticsScreen(flights: List<Flight>) {
                     .fillMaxWidth()
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(text = "Total Flights: ${flights.size}")
                     Text(text = "Total Duration: ${flights.sumOf { it.duration }} minutes")
@@ -55,7 +57,11 @@ fun StatisticsScreen(flights: List<Flight>) {
                     selectedYear = selectedYear!!,
                     onYearSelected = { selectedYear = it }
                 )
-                FlightsByMonthChart(flights = flights, year = selectedYear!!)
+                FlightsByMonthChart(
+                    flights = flights,
+                    year = selectedYear!!,
+                    modifier = Modifier.fillMaxWidth()
+                )
             } else {
                 Text("No flights recorded yet.")
             }
