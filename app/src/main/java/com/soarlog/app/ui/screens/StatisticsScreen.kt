@@ -1,23 +1,27 @@
 package com.soarlog.app.ui.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.soarlog.app.models.Flight
-import androidx.compose.material3.Card
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.unit.dp
-import com.soarlog.app.ui.charts.FlightsByGliderChart
+import com.soarlog.app.models.Flight
+import com.soarlog.app.ui.charts.FlightsByMonthChart
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatisticsScreen(flights: List<Flight>) {
+    val years = flights.map {
+        val calendar = Calendar.getInstance()
+        calendar.time = it.date
+        calendar.get(Calendar.YEAR)
+    }.distinct().sortedDescending()
+
+    var selectedYear by remember { mutableStateOf(years.firstOrNull()) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -42,7 +46,64 @@ fun StatisticsScreen(flights: List<Flight>) {
                     Text(text = "Total Duration: ${flights.sumOf { it.duration }} minutes")
                 }
             }
-            FlightsByGliderChart(flights = flights)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (selectedYear != null) {
+                YearSelector(
+                    years = years,
+                    selectedYear = selectedYear!!,
+                    onYearSelected = { selectedYear = it }
+                )
+                FlightsByMonthChart(flights = flights, year = selectedYear!!)
+            } else {
+                Text("No flights recorded yet.")
+            }
         }
     }
 }
+
+@Composable
+fun YearSelector(
+    years: List<Int>,
+    selectedYear: Int,
+    onYearSelected: (Int) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
+        OutlinedTextField(
+            value = selectedYear.toString(),
+            onValueChange = {},
+            readOnly = true,
+            label = { Text("Year") },
+            trailingIcon = {
+                IconButton(onClick = { expanded = true }) {
+                    Icon(Icons.Default.ArrowDropDown, contentDescription = "Dropdown")
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            years.forEach { year ->
+                DropdownMenuItem(
+                    text = { Text(year.toString()) }, // Pass the Text composable to the 'text' parameter
+                    onClick = {
+                        onYearSelected(year)
+                        expanded = false
+                    }
+                    // You can add other parameters here if needed, like leadingIcon, etc.
+                )
+            }
+            }
+        }
+    }
