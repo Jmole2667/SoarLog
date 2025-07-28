@@ -276,13 +276,6 @@ fun FlightLogForm(
                     Text("Save")
                 }
 
-                flights.firstOrNull()?.let { flight ->
-                    gliderType = flight.gliderType
-                    takeoff = flight.takeoff
-                    landing = flight.landing
-                    launchType = flight.launchType
-                    duration = flight.duration.toString()
-                }
             }
         }
     }
