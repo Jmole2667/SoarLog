@@ -1,5 +1,6 @@
 package com.soarlog.app.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.soarlog.app.models.Flight
@@ -24,7 +25,8 @@ open class FlightLogViewModel(private val repository: FlightRepository) : ViewMo
             try {
                 _ognFlights.value = repository.getFlights(registration)
             } catch (e: Exception) {
-                // Handle error
+                Log.e("FlightLogViewModel", "Error during searchFlights", e)
+                _ognFlights.value = emptyList()
             }
         }
     }

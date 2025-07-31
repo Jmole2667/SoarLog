@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:2:1-28:12
+ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:2:1-30:12
+INJECTED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:2:1-30:12
+INJECTED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:2:1-30:12
+INJECTED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:2:1-30:12
 MERGED from [androidx.room:room-ktx:2.5.2] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\81d060965b5eca7a1df656687d34454c\transformed\room-ktx-2.5.2\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.room:room-runtime:2.5.2] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\3d8a43b526aada903a3e8c822dc337e1\transformed\room-runtime-2.5.2\AndroidManifest.xml:17:1-31:12
 MERGED from [androidx.navigation:navigation-common:2.7.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\a24c24cb008055fdbbb8c120ea2b535c\transformed\navigation-common-2.7.0\AndroidManifest.xml:17:1-22:12
@@ -70,9 +70,13 @@ MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Jackm\.gradle\ca
 		INJECTED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:5:5-67
+	android:name
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:5:22-64
 application
-ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:5:5-26:19
-INJECTED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:5:5-26:19
+ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:7:5-28:19
+INJECTED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:7:5-28:19
 MERGED from [androidx.room:room-runtime:2.5.2] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\3d8a43b526aada903a3e8c822dc337e1\transformed\room-runtime-2.5.2\AndroidManifest.xml:23:5-29:19
 MERGED from [androidx.room:room-runtime:2.5.2] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\3d8a43b526aada903a3e8c822dc337e1\transformed\room-runtime-2.5.2\AndroidManifest.xml:23:5-29:19
 MERGED from [androidx.compose.ui:ui-test-manifest:1.6.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\ad06215df9dcad300b92e22d1637509b\transformed\ui-test-manifest-1.6.0\AndroidManifest.xml:22:5-26:19
@@ -96,43 +100,43 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Jackm\.gradle\cach
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] C:\Users\Jackm\.gradle\caches\8.14.2\transforms\d64aa4cc3cea3cf5ea91ea3e8c3c563e\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:12:9-35
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:14:9-35
 	android:label
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:10:9-41
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:12:9-41
 	android:fullBackupContent
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:8:9-54
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:10:9-54
 	android:roundIcon
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:11:9-54
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:13:9-54
 	tools:targetApi
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:14:9-29
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:16:9-29
 	android:icon
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:9:9-43
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:11:9-43
 	android:allowBackup
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:6:9-35
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:8:9-35
 	android:theme
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:13:9-45
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:15:9-45
 	android:dataExtractionRules
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:7:9-65
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:9:9-65
 activity#com.soarlog.app.MainActivity
-ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:15:9-25:20
+ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:17:9-27:20
 	android:label
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:18:13-45
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:20:13-45
 	android:exported
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:17:13-36
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:19:13-36
 	android:theme
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:19:13-49
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:21:13-49
 	android:name
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:16:13-41
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:18:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:20:13-24:29
+ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:22:13-26:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:21:17-69
+ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:23:17-69
 	android:name
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:21:25-66
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:23:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:23:17-77
+ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:25:17-77
 	android:name
-		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:23:27-74
+		ADDED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml:25:27-74
 uses-sdk
 INJECTED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\Jackm\StudioProjects\SoarLog\app\src\main\AndroidManifest.xml

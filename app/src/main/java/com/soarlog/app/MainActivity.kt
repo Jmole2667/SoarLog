@@ -158,7 +158,6 @@ fun FlightLogForm(
                     text = "Auto",
                     style = MaterialTheme.typography.headlineMedium
                 )
-                var expanded by remember { mutableStateOf(false) }
                 val ognFlights by viewModel.ognFlights.collectAsState(initial = emptyList())
 
                 Box {
@@ -166,17 +165,17 @@ fun FlightLogForm(
                         value = flightRegistration,
                         onValueChange = {
                             flightRegistration = it.uppercase()
-                            expanded = it.isNotEmpty()
                             if (it.isNotEmpty()) {
                                 viewModel.searchFlights(it)
                             }
                         },
                         label = { Text("Flight Registration") },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true
                     )
                     DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false },
+                        expanded = ognFlights.isNotEmpty(),
+                        onDismissRequest = { /* No need to manually set expanded */ },
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         ognFlights.forEach { flight ->
@@ -187,7 +186,7 @@ fun FlightLogForm(
                                     gliderType = flight.aircraftModel
                                     takeoff = Date(flight.takeoffTs * 1000).toFormattedString()
                                     landing = Date(flight.landingTs * 1000).toFormattedString()
-                                    expanded = false
+                                    viewModel.searchFlights("")
                                 }
                             )
                         }
