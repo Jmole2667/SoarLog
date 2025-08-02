@@ -47,9 +47,11 @@ import java.util.Locale
 fun FlightListScreen(
     flights: List<Flight>,
     viewModel: FlightLogViewModel,
-    onFlightClick: (Int) -> Unit
+    onFlightClick: (Int) -> Unit = {}, // Keep for compatibility but won't be used
+    onEditFlight: (Int) -> Unit = {} // Add edit callback
 ) {
     var sortOrder by remember { mutableStateOf(SortOrder.Date) }
+    var selectedFlightId by remember { mutableStateOf<Int?>(null) }
 
     // Custom sorting logic that respects the date and time ordering
     val sortedFlights = when (sortOrder) {
@@ -89,9 +91,24 @@ fun FlightListScreen(
                 FlightListItem(
                     flight = flight,
                     onDelete = { viewModel.deleteFlight(flight) },
-                    onClick = { onFlightClick(flight.id) }
+                    onClick = { selectedFlightId = flight.id }
                 )
             }
+        }
+    }
+
+    // Show modal when a flight is selected
+    selectedFlightId?.let { flightId ->
+        val selectedFlight = flights.find { it.id == flightId }
+        selectedFlight?.let { flight ->
+            FlightDetailsModal(
+                flight = flight,
+                onEdit = {
+                    selectedFlightId = null
+                    onEditFlight(flightId)
+                },
+                onDismiss = { selectedFlightId = null }
+            )
         }
     }
 }

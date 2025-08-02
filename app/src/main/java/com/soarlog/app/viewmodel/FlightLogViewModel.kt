@@ -165,9 +165,15 @@ open class FlightLogViewModel(private val repository: FlightRepository) : ViewMo
         }
     }
 
-    fun getFlightById(id: Int): StateFlow<Flight?> {
+    fun getFlightById(id: Int): kotlinx.coroutines.flow.Flow<Flight?> {
+        println("🔍 ViewModel getFlightById called with id: $id")
+        
+        // Add debugging for database state
+        viewModelScope.launch {
+            repository.debugDatabaseState()
+        }
+        
         return repository.getFlightById(id)
-            .stateIn(viewModelScope, SharingStarted.Lazily, null)
     }
 }
 

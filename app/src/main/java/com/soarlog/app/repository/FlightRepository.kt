@@ -7,6 +7,7 @@ import com.soarlog.app.models.OgnFlightResponse
 import com.soarlog.app.models.OgnDevice
 import com.soarlog.app.network.OgnApiService
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
 import retrofit2.HttpException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -48,8 +49,8 @@ open class FlightRepository(
         return flightDao.getAllFlights()
     }
 
-    open suspend fun insert(flight: Flight) {
-        flightDao.insert(flight)
+    open suspend fun insert(flight: Flight): Long {
+        return flightDao.insert(flight)
     }
 
     open suspend fun update(flight: Flight) {
@@ -62,5 +63,23 @@ open class FlightRepository(
 
     open fun getFlightById(id: Int): Flow<Flight?> {
         return flightDao.getFlightById(id)
+            .onEach { flight ->
+                println("🔍 Repository getFlightById($id): $flight")
+            }
+    }
+    
+    // Add debugging methods
+    open suspend fun debugDatabaseState() {
+        try {
+            val count = flightDao.getFlightCount()
+            val allFlights = flightDao.getAllFlightsSync()
+            println("🔍 Database debug - Total flights: $count")
+            allFlights.forEachIndexed { index, flight ->
+                println("🔍 Flight $index: id=${flight.id}, registration=${flight.registration}")
+            }
+        } catch (e: Exception) {
+            println("❌ Error debugging database: ${e.message}")
+            e.printStackTrace()
+        }
     }
 }

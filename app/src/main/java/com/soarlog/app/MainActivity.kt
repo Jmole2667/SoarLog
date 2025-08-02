@@ -3,7 +3,10 @@ package com.soarlog.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,7 +35,6 @@ import com.soarlog.app.models.Flight
 import com.soarlog.app.network.ApiClient
 import com.soarlog.app.repository.FlightRepository
 import com.soarlog.app.ui.screens.EditFlightScreen
-import com.soarlog.app.ui.screens.FlightDetailsScreen
 import com.soarlog.app.ui.screens.FlightListScreen
 import com.soarlog.app.ui.screens.StatisticsScreen
 import com.soarlog.app.ui.theme.SoarLogTheme
@@ -41,8 +43,21 @@ import com.soarlog.app.viewmodel.FlightLogViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +96,9 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController = navController,
                         startDestination = "flight-list",
-                        modifier = Modifier.padding(paddingValues)
+                        modifier = Modifier.padding(paddingValues),
+                        enterTransition = { EnterTransition.None },
+                        exitTransition = { ExitTransition.None }
                     ) {
                         composable("logbook") {
                             FlightLogForm(viewModel, onNavigateToFlightList = {
@@ -93,8 +110,8 @@ class MainActivity : ComponentActivity() {
                             FlightListScreen(
                                 flights = flights,
                                 viewModel = viewModel,
-                                onFlightClick = { flightId ->
-                                    navController.navigate("flight-details/$flightId")
+                                onEditFlight = { flightId ->
+                                    navController.navigate("edit-flight/$flightId")
                                 }
                             )
                         }
@@ -103,40 +120,37 @@ class MainActivity : ComponentActivity() {
                             StatisticsScreen(flights = flights)
                         }
                         composable(
-                            "flight-details/{flightId}",
-                            arguments = listOf(navArgument("flightId") { type = NavType.IntType })
-                        ) { backStackEntry ->
-                            val flightId = backStackEntry.arguments?.getInt("flightId")
-                            flightId?.let {
-                                val flight by viewModel.getFlightById(it).collectAsState()
-                                flight?.let { f ->
-                                    FlightDetailsScreen(
-                                        flight = f,
-                                        onEdit = {
-                                            navController.navigate("edit-flight/$flightId")
-                                        },
-                                        onBack = {
-                                            navController.popBackStack()
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                        composable(
                             "edit-flight/{flightId}",
                             arguments = listOf(navArgument("flightId") { type = NavType.IntType })
                         ) { backStackEntry ->
                             val flightId = backStackEntry.arguments?.getInt("flightId")
                             flightId?.let {
-                                val flight by viewModel.getFlightById(it).collectAsState()
-                                flight?.let { f ->
+                                // Use Flow directly instead of StateFlow
+                                val flight by viewModel.getFlightById(it).collectAsState(initial = null)
+
+                                flight?.let { flightData ->
                                     EditFlightScreen(
-                                        flight = f,
+                                        flight = flightData,
                                         viewModel = viewModel,
                                         onBack = {
                                             navController.popBackStack()
                                         }
                                     )
+                                } ?: run {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .background(MaterialTheme.colorScheme.background),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Column(
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
+                                            CircularProgressIndicator()
+                                            Spacer(modifier = Modifier.height(16.dp))
+                                            Text("Loading flight details...")
+                                        }
+                                    }
                                 }
                             }
                         }

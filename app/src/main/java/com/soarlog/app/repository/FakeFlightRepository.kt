@@ -1,4 +1,3 @@
-
 package com.soarlog.app.repository
 
 import com.soarlog.app.data.FlightDao
@@ -28,11 +27,16 @@ class FakeFlightRepository(
         )
     }
 
-    override suspend fun insert(flight: Flight) {
-        // Do nothing for testing
+    override suspend fun insert(flight: Flight): Long {
+        // Return a fake ID for testing
+        return 1L
     }
 
     override suspend fun delete(flight: Flight) {
         // Do nothing for testing
+    }
+
+    override suspend fun debugDatabaseState() {
+        println("🔍 FakeRepository - Using fake data")
     }
 }
