@@ -52,7 +52,15 @@ open class FlightRepository(
         flightDao.insert(flight)
     }
 
+    open suspend fun update(flight: Flight) {
+        flightDao.update(flight)
+    }
+
     open suspend fun delete(flight: Flight) {
         flightDao.delete(flight)
+    }
+
+    open fun getFlightById(id: Int): Flow<Flight?> {
+        return flightDao.getFlightById(id)
     }
 }

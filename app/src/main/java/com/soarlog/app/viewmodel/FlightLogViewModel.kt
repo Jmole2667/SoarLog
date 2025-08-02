@@ -153,10 +153,21 @@ open class FlightLogViewModel(private val repository: FlightRepository) : ViewMo
         }
     }
 
+    fun updateFlight(flight: Flight) {
+        viewModelScope.launch {
+            repository.update(flight)
+        }
+    }
+
     open fun deleteFlight(flight: Flight) {
         viewModelScope.launch {
             repository.delete(flight)
         }
+    }
+
+    fun getFlightById(id: Int): StateFlow<Flight?> {
+        return repository.getFlightById(id)
+            .stateIn(viewModelScope, SharingStarted.Lazily, null)
     }
 }
 

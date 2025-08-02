@@ -25,10 +25,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.soarlog.app.data.AppDatabase
 import com.soarlog.app.models.Flight
 import com.soarlog.app.network.ApiClient
 import com.soarlog.app.repository.FlightRepository
+import com.soarlog.app.ui.screens.EditFlightScreen
+import com.soarlog.app.ui.screens.FlightDetailsScreen
 import com.soarlog.app.ui.screens.FlightListScreen
 import com.soarlog.app.ui.screens.StatisticsScreen
 import com.soarlog.app.ui.theme.SoarLogTheme
@@ -86,11 +90,55 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("flight-list") {
                             val flights by viewModel.allFlights.collectAsState(initial = emptyList())
-                            FlightListScreen(flights = flights, viewModel = viewModel)
+                            FlightListScreen(
+                                flights = flights,
+                                viewModel = viewModel,
+                                onFlightClick = { flightId ->
+                                    navController.navigate("flight-details/$flightId")
+                                }
+                            )
                         }
                         composable("statistics") {
                             val flights by viewModel.allFlights.collectAsState(initial = emptyList())
                             StatisticsScreen(flights = flights)
+                        }
+                        composable(
+                            "flight-details/{flightId}",
+                            arguments = listOf(navArgument("flightId") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            val flightId = backStackEntry.arguments?.getInt("flightId")
+                            flightId?.let {
+                                val flight by viewModel.getFlightById(it).collectAsState()
+                                flight?.let { f ->
+                                    FlightDetailsScreen(
+                                        flight = f,
+                                        onEdit = {
+                                            navController.navigate("edit-flight/$flightId")
+                                        },
+                                        onBack = {
+                                            navController.popBackStack()
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                        composable(
+                            "edit-flight/{flightId}",
+                            arguments = listOf(navArgument("flightId") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            val flightId = backStackEntry.arguments?.getInt("flightId")
+                            flightId?.let {
+                                val flight by viewModel.getFlightById(it).collectAsState()
+                                flight?.let { f ->
+                                    EditFlightScreen(
+                                        flight = f,
+                                        viewModel = viewModel,
+                                        onBack = {
+                                            navController.popBackStack()
+                                        }
+                                    )
+                                }
+                            }
                         }
                     }
                 }

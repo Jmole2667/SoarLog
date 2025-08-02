@@ -44,7 +44,11 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FlightListScreen(flights: List<Flight>, viewModel: FlightLogViewModel) {
+fun FlightListScreen(
+    flights: List<Flight>,
+    viewModel: FlightLogViewModel,
+    onFlightClick: (Int) -> Unit
+) {
     var sortOrder by remember { mutableStateOf(SortOrder.Date) }
 
     // Custom sorting logic that respects the date and time ordering
@@ -82,7 +86,11 @@ fun FlightListScreen(flights: List<Flight>, viewModel: FlightLogViewModel) {
                 .padding(paddingValues)
         ) {
             items(sortedFlights) { flight ->
-                FlightListItem(flight, onDelete = { viewModel.deleteFlight(flight) })
+                FlightListItem(
+                    flight = flight,
+                    onDelete = { viewModel.deleteFlight(flight) },
+                    onClick = { onFlightClick(flight.id) }
+                )
             }
         }
     }
@@ -148,11 +156,13 @@ enum class SortOrder {
     GliderType
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FlightListItem(flight: Flight, onDelete: () -> Unit) {
+fun FlightListItem(flight: Flight, onDelete: () -> Unit, onClick: () -> Unit) {
     var showDialog by remember { mutableStateOf(false) }
 
     Card(
+        onClick = onClick,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
@@ -230,7 +240,11 @@ fun FlightListScreenPreview() {
         Flight(2, "G-EFGH", null, null, "Astir", "Lasham", "Lasham", "Aerotow", 120, Date(), "11:00", "13:00")
     )
     val repository = FakeFlightRepository(null, null)
-    FlightListScreen(flights, viewModel = object : FlightLogViewModel(repository) {
-        override fun deleteFlight(flight: Flight) {}
-    })
+    FlightListScreen(
+        flights = flights,
+        viewModel = object : FlightLogViewModel(repository) {
+            override fun deleteFlight(flight: Flight) {}
+        },
+        onFlightClick = {}
+    )
 }
