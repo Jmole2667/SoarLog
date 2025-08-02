@@ -1,2 +1,9 @@
+# Android Studio
+.gradle
 /build
 /app/build
+/captures
+.DS_Store
+/local.properties
+.idea/
+*.iml
