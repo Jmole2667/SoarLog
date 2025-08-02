@@ -16,5 +16,7 @@ data class Flight(
     val landing: String,
     val launchType: String,
     val duration: Long,
-    val date: Date
+    val date: Date,
+    val takeoffTime: String? = null, // Store takeoff time (e.g., "09:30")
+    val landingTime: String? = null  // Store landing time (e.g., "10:45")
 )

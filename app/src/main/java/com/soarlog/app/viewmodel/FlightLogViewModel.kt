@@ -1,4 +1,3 @@
-
 package com.soarlog.app.viewmodel
 
 import androidx.lifecycle.ViewModel
@@ -30,11 +29,11 @@ open class FlightLogViewModel(private val repository: FlightRepository) : ViewMo
     val allFlights: StateFlow<List<Flight>> = repository.getAllFlights()
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    // Search method for ICAO codes
-    fun searchFlightsByAirfield(icaoCode: String, date: Date = Date()) {
-        val cleanIcao = icaoCode.trim().uppercase()
+    // Simplified search method that only searches by airfield
+    fun searchFlightsByAirfield(airfield: String, date: Date = Date()) {
+        val cleanAirfield = airfield.trim().uppercase()
 
-        if (cleanIcao.isEmpty()) {
+        if (cleanAirfield.isEmpty()) {
             _ognFlights.value = emptyList()
             _allOgnFlights.value = emptyList()
             _isSearching.value = false
@@ -46,9 +45,9 @@ open class FlightLogViewModel(private val repository: FlightRepository) : ViewMo
             val dateString = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)
 
             try {
-                println("🔍 ICAO search: code=$cleanIcao, date=$dateString")
-                val response = repository.getFlightsByAirfield(cleanIcao, date)
-                println("📊 ICAO API Response: flights=${response.flights?.size}")
+                println("🔍 Airfield search: airfield=$cleanAirfield, date=$dateString")
+                val response = repository.getFlightsByAirfield(cleanAirfield, date)
+                println("📊 Airfield API Response: flights=${response.flights?.size}")
 
                 val airfieldFlights = response.flights?.mapNotNull { flight ->
                     val device = response.devices?.getOrNull(flight.device)
@@ -79,7 +78,7 @@ open class FlightLogViewModel(private val repository: FlightRepository) : ViewMo
                 _allOgnFlights.value = sortedFlights
                 applyRegistrationFilter()
                 _isSearching.value = false
-                println("✅ Found ${sortedFlights.size} flights from ICAO search")
+                println("✅ Found ${sortedFlights.size} flights from airfield search")
 
             } catch (e: retrofit2.HttpException) {
                 println("❌ HTTP Error ${e.code()}: ${e.message()}")

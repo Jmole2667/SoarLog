@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.soarlog.app.models.Flight
 
-@Database(entities = [Flight::class], version = 1, exportSchema = false)
+@Database(entities = [Flight::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun flightDao(): FlightDao
@@ -22,7 +22,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "soarlog_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // This will recreate the database
+                    .build()
                 INSTANCE = instance
                 instance
             }

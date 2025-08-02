@@ -36,12 +36,12 @@ public final class AppDatabase_Impl extends AppDatabase {
 
   @Override
   protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(2) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `flight` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `registration` TEXT NOT NULL, `p2` TEXT, `notes` TEXT, `gliderType` TEXT NOT NULL, `takeoff` TEXT NOT NULL, `landing` TEXT NOT NULL, `launchType` TEXT NOT NULL, `duration` INTEGER NOT NULL, `date` INTEGER NOT NULL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `flight` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `registration` TEXT NOT NULL, `p2` TEXT, `notes` TEXT, `gliderType` TEXT NOT NULL, `takeoff` TEXT NOT NULL, `landing` TEXT NOT NULL, `launchType` TEXT NOT NULL, `duration` INTEGER NOT NULL, `date` INTEGER NOT NULL, `takeoffTime` TEXT, `landingTime` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '84d4473d719d1c8cac7cf5afe26ded6e')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ef93c318f407679d357004b5f0d71a6b')");
       }
 
       @Override
@@ -85,7 +85,7 @@ public final class AppDatabase_Impl extends AppDatabase {
 
       @Override
       public RoomOpenHelper.ValidationResult onValidateSchema(SupportSQLiteDatabase _db) {
-        final HashMap<String, TableInfo.Column> _columnsFlight = new HashMap<String, TableInfo.Column>(10);
+        final HashMap<String, TableInfo.Column> _columnsFlight = new HashMap<String, TableInfo.Column>(12);
         _columnsFlight.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsFlight.put("registration", new TableInfo.Column("registration", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsFlight.put("p2", new TableInfo.Column("p2", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -96,6 +96,8 @@ public final class AppDatabase_Impl extends AppDatabase {
         _columnsFlight.put("launchType", new TableInfo.Column("launchType", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsFlight.put("duration", new TableInfo.Column("duration", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsFlight.put("date", new TableInfo.Column("date", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFlight.put("takeoffTime", new TableInfo.Column("takeoffTime", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFlight.put("landingTime", new TableInfo.Column("landingTime", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysFlight = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesFlight = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoFlight = new TableInfo("flight", _columnsFlight, _foreignKeysFlight, _indicesFlight);
@@ -107,7 +109,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "84d4473d719d1c8cac7cf5afe26ded6e", "897060de7b942677c0f5efebf8219061");
+    }, "ef93c318f407679d357004b5f0d71a6b", "38386d74f34b4d1c4c222c338a01671b");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)

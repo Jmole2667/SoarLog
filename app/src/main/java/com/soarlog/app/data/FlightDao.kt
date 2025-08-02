@@ -1,15 +1,15 @@
 package com.soarlog.app.data
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Delete
 import com.soarlog.app.models.Flight
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FlightDao {
-    @Query("SELECT * FROM flight ORDER BY date DESC")
+    @Query("SELECT * FROM flight ORDER BY date DESC, takeoffTime DESC")
     fun getAllFlights(): Flow<List<Flight>>
 
     @Insert

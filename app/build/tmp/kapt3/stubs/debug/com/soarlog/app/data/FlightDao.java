@@ -7,7 +7,7 @@ import java.lang.System;
 public abstract interface FlightDao {
     
     @org.jetbrains.annotations.NotNull
-    @androidx.room.Query(value = "SELECT * FROM flight ORDER BY date DESC")
+    @androidx.room.Query(value = "SELECT * FROM flight ORDER BY date DESC, takeoffTime DESC")
     public abstract kotlinx.coroutines.flow.Flow<java.util.List<com.soarlog.app.models.Flight>> getAllFlights();
     
     @org.jetbrains.annotations.Nullable

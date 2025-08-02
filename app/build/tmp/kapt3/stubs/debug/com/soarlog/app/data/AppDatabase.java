@@ -3,7 +3,7 @@ package com.soarlog.app.data;
 import java.lang.System;
 
 @androidx.room.TypeConverters(value = {com.soarlog.app.data.Converters.class})
-@androidx.room.Database(entities = {com.soarlog.app.models.Flight.class}, version = 1, exportSchema = false)
+@androidx.room.Database(entities = {com.soarlog.app.models.Flight.class}, version = 2, exportSchema = false)
 @kotlin.Metadata(mv = {1, 8, 0}, k = 1, d1 = {"\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\b\'\u0018\u0000 \u00052\u00020\u0001:\u0001\u0005B\u0005\u00a2\u0006\u0002\u0010\u0002J\b\u0010\u0003\u001a\u00020\u0004H&\u00a8\u0006\u0006"}, d2 = {"Lcom/soarlog/app/data/AppDatabase;", "Landroidx/room/RoomDatabase;", "()V", "flightDao", "Lcom/soarlog/app/data/FlightDao;", "Companion", "app_debug"})
 public abstract class AppDatabase extends androidx.room.RoomDatabase {
     @org.jetbrains.annotations.NotNull

@@ -43,7 +43,7 @@ public final class FlightDao_Impl implements FlightDao {
     this.__insertionAdapterOfFlight = new EntityInsertionAdapter<Flight>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `flight` (`id`,`registration`,`p2`,`notes`,`gliderType`,`takeoff`,`landing`,`launchType`,`duration`,`date`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR ABORT INTO `flight` (`id`,`registration`,`p2`,`notes`,`gliderType`,`takeoff`,`landing`,`launchType`,`duration`,`date`,`takeoffTime`,`landingTime`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -91,6 +91,16 @@ public final class FlightDao_Impl implements FlightDao {
         } else {
           stmt.bindLong(10, _tmp);
         }
+        if (value.getTakeoffTime() == null) {
+          stmt.bindNull(11);
+        } else {
+          stmt.bindString(11, value.getTakeoffTime());
+        }
+        if (value.getLandingTime() == null) {
+          stmt.bindNull(12);
+        } else {
+          stmt.bindString(12, value.getLandingTime());
+        }
       }
     };
     this.__deletionAdapterOfFlight = new EntityDeletionOrUpdateAdapter<Flight>(__db) {
@@ -107,7 +117,7 @@ public final class FlightDao_Impl implements FlightDao {
   }
 
   @Override
-  public Object insert(final Flight flight, final Continuation<? super Unit> continuation) {
+  public Object insert(final Flight flight, final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -120,11 +130,11 @@ public final class FlightDao_Impl implements FlightDao {
           __db.endTransaction();
         }
       }
-    }, continuation);
+    }, arg1);
   }
 
   @Override
-  public Object delete(final Flight flight, final Continuation<? super Unit> continuation) {
+  public Object delete(final Flight flight, final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -137,12 +147,12 @@ public final class FlightDao_Impl implements FlightDao {
           __db.endTransaction();
         }
       }
-    }, continuation);
+    }, arg1);
   }
 
   @Override
   public Flow<List<Flight>> getAllFlights() {
-    final String _sql = "SELECT * FROM flight ORDER BY date DESC";
+    final String _sql = "SELECT * FROM flight ORDER BY date DESC, takeoffTime DESC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return CoroutinesRoom.createFlow(__db, false, new String[]{"flight"}, new Callable<List<Flight>>() {
       @Override
@@ -159,6 +169,8 @@ public final class FlightDao_Impl implements FlightDao {
           final int _cursorIndexOfLaunchType = CursorUtil.getColumnIndexOrThrow(_cursor, "launchType");
           final int _cursorIndexOfDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "duration");
           final int _cursorIndexOfDate = CursorUtil.getColumnIndexOrThrow(_cursor, "date");
+          final int _cursorIndexOfTakeoffTime = CursorUtil.getColumnIndexOrThrow(_cursor, "takeoffTime");
+          final int _cursorIndexOfLandingTime = CursorUtil.getColumnIndexOrThrow(_cursor, "landingTime");
           final List<Flight> _result = new ArrayList<Flight>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final Flight _item;
@@ -216,7 +228,19 @@ public final class FlightDao_Impl implements FlightDao {
               _tmp = _cursor.getLong(_cursorIndexOfDate);
             }
             _tmpDate = __converters.fromTimestamp(_tmp);
-            _item = new Flight(_tmpId,_tmpRegistration,_tmpP2,_tmpNotes,_tmpGliderType,_tmpTakeoff,_tmpLanding,_tmpLaunchType,_tmpDuration,_tmpDate);
+            final String _tmpTakeoffTime;
+            if (_cursor.isNull(_cursorIndexOfTakeoffTime)) {
+              _tmpTakeoffTime = null;
+            } else {
+              _tmpTakeoffTime = _cursor.getString(_cursorIndexOfTakeoffTime);
+            }
+            final String _tmpLandingTime;
+            if (_cursor.isNull(_cursorIndexOfLandingTime)) {
+              _tmpLandingTime = null;
+            } else {
+              _tmpLandingTime = _cursor.getString(_cursorIndexOfLandingTime);
+            }
+            _item = new Flight(_tmpId,_tmpRegistration,_tmpP2,_tmpNotes,_tmpGliderType,_tmpTakeoff,_tmpLanding,_tmpLaunchType,_tmpDuration,_tmpDate,_tmpTakeoffTime,_tmpLandingTime);
             _result.add(_item);
           }
           return _result;

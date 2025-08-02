@@ -37,7 +37,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.unit.dp
 import com.soarlog.app.models.Flight
 import com.soarlog.app.repository.FakeFlightRepository
-import com.soarlog.app.repository.FlightRepository
 import com.soarlog.app.viewmodel.FlightLogViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -47,10 +46,24 @@ import java.util.Locale
 @Composable
 fun FlightListScreen(flights: List<Flight>, viewModel: FlightLogViewModel) {
     var sortOrder by remember { mutableStateOf(SortOrder.Date) }
+
+    // Custom sorting logic that respects the date and time ordering
     val sortedFlights = when (sortOrder) {
-        SortOrder.Date -> flights.sortedBy { it.date }
-        SortOrder.Duration -> flights.sortedBy { it.duration }
-        SortOrder.GliderType -> flights.sortedBy { it.gliderType }
+        SortOrder.Date -> {
+            // Sort by date DESC, then by takeoff time DESC for same day
+            flights.sortedWith(compareByDescending<Flight> { it.date }
+                .thenByDescending { parseTimeToMinutes(it.takeoffTime) })
+        }
+        SortOrder.Duration -> {
+            // Sort by duration DESC, then by date DESC
+            flights.sortedWith(compareByDescending<Flight> { it.duration }
+                .thenByDescending { it.date })
+        }
+        SortOrder.GliderType -> {
+            // Sort by glider type ASC, then by date DESC
+            flights.sortedWith(compareBy<Flight> { it.gliderType }
+                .thenByDescending { it.date })
+        }
     }
 
     Scaffold(
@@ -68,10 +81,28 @@ fun FlightListScreen(flights: List<Flight>, viewModel: FlightLogViewModel) {
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            items(sortedFlights.withIndex().toList()) { (index, flight) ->
-                FlightListItem(flight, onDelete = { viewModel.deleteFlight(flight) }, flightNumber = index + 1)
+            items(sortedFlights) { flight ->
+                FlightListItem(flight, onDelete = { viewModel.deleteFlight(flight) })
             }
         }
+    }
+}
+
+// Helper function to parse time string to minutes for sorting
+private fun parseTimeToMinutes(timeString: String?): Int {
+    if (timeString.isNullOrBlank()) return 0
+
+    return try {
+        val parts = timeString.split(":")
+        if (parts.size >= 2) {
+            val hours = parts[0].toIntOrNull() ?: 0
+            val minutes = parts[1].toIntOrNull() ?: 0
+            hours * 60 + minutes
+        } else {
+            0
+        }
+    } catch (e: Exception) {
+        0
     }
 }
 
@@ -87,14 +118,14 @@ fun SortMenu(onSortOrderChange: (SortOrder) -> Unit) {
             onDismissRequest = { expanded = false }
         ) {
             DropdownMenuItem(
-                text = { Text("Sort by Date") },
+                text = { Text("Sort by Date (Latest First)") },
                 onClick = {
                     onSortOrderChange(SortOrder.Date)
                     expanded = false
                 }
             )
             DropdownMenuItem(
-                text = { Text("Sort by Duration") },
+                text = { Text("Sort by Duration (Longest First)") },
                 onClick = {
                     onSortOrderChange(SortOrder.Duration)
                     expanded = false
@@ -118,7 +149,7 @@ enum class SortOrder {
 }
 
 @Composable
-fun FlightListItem(flight: Flight, onDelete: () -> Unit, flightNumber: Int) {
+fun FlightListItem(flight: Flight, onDelete: () -> Unit) {
     var showDialog by remember { mutableStateOf(false) }
 
     Card(
@@ -130,11 +161,6 @@ fun FlightListItem(flight: Flight, onDelete: () -> Unit, flightNumber: Int) {
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "$flightNumber.",
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(end = 16.dp)
-            )
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -148,11 +174,21 @@ fun FlightListItem(flight: Flight, onDelete: () -> Unit, flightNumber: Int) {
                     )
                     Text(text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(flight.date))
                 }
+
+                // Show takeoff time if available
+                if (!flight.takeoffTime.isNullOrBlank()) {
+                    Text(
+                        text = "Takeoff: ${flight.takeoffTime}",
+                        style = androidx.compose.material3.MaterialTheme.typography.bodySmall,
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(8.dp))
 
                 flight.gliderType?.let { if (it.isNotBlank()) Text(text = "Type: $it") }
-                flight.takeoff?.let { if (it.isNotBlank()) Text(text = "Takeoff: $it") }
-                flight.landing?.let { if (it.isNotBlank()) Text(text = "Landing: $it") }
+                flight.takeoff?.let { if (it.isNotBlank()) Text(text = "Location: $it") }
+                flight.landing?.let { if (it.isNotBlank() && it != flight.takeoff) Text(text = "Landing: $it") }
                 flight.launchType?.let { if (it.isNotBlank()) Text(text = "Launch Type: $it") }
                 if (flight.duration > 0) Text(text = "Duration: ${flight.duration} minutes")
                 flight.notes?.let { if (it.isNotBlank()) Text(text = "Notes: $it") }
@@ -190,8 +226,8 @@ fun FlightListItem(flight: Flight, onDelete: () -> Unit, flightNumber: Int) {
 @Composable
 fun FlightListScreenPreview() {
     val flights = listOf(
-        Flight(1, "G-ABCD", null, null, "K21", "Lasham", "Lasham", "Winch", 60, Date()),
-        Flight(2, "G-EFGH", null, null, "Astir", "Lasham", "Lasham", "Aerotow", 120, Date())
+        Flight(1, "G-ABCD", null, null, "K21", "Lasham", "Lasham", "Winch", 60, Date(), "09:30", "10:30"),
+        Flight(2, "G-EFGH", null, null, "Astir", "Lasham", "Lasham", "Aerotow", 120, Date(), "11:00", "13:00")
     )
     val repository = FakeFlightRepository(null, null)
     FlightListScreen(flights, viewModel = object : FlightLogViewModel(repository) {
