@@ -1,3 +1,4 @@
+
 package com.soarlog.app.viewmodel
 
 import androidx.lifecycle.ViewModel
@@ -19,17 +20,23 @@ open class FlightLogViewModel(private val repository: FlightRepository) : ViewMo
     private val _ognFlights = MutableStateFlow<List<OgnFlightDisplay>>(emptyList())
     val ognFlights: StateFlow<List<OgnFlightDisplay>> = _ognFlights
 
+    private val _allOgnFlights = MutableStateFlow<List<OgnFlightDisplay>>(emptyList())
+    private val _registrationFilter = MutableStateFlow("")
+    val registrationFilter: StateFlow<String> = _registrationFilter
+
     private val _isSearching = MutableStateFlow(false)
     val isSearching: StateFlow<Boolean> = _isSearching
 
     val allFlights: StateFlow<List<Flight>> = repository.getAllFlights()
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    fun searchFlights(registration: String, date: Date = Date()) {
-        val cleanRegistration = registration.trim().uppercase()
+    // Search method for ICAO codes
+    fun searchFlightsByAirfield(icaoCode: String, date: Date = Date()) {
+        val cleanIcao = icaoCode.trim().uppercase()
 
-        if (cleanRegistration.isEmpty() || cleanRegistration.length < 2) {
+        if (cleanIcao.isEmpty()) {
             _ognFlights.value = emptyList()
+            _allOgnFlights.value = emptyList()
             _isSearching.value = false
             return
         }
@@ -39,44 +46,88 @@ open class FlightLogViewModel(private val repository: FlightRepository) : ViewMo
             val dateString = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)
 
             try {
-                println("🔍 Multi-airfield search: registration=$cleanRegistration, date=$dateString")
+                println("🔍 ICAO search: code=$cleanIcao, date=$dateString")
+                val response = repository.getFlightsByAirfield(cleanIcao, date)
+                println("📊 ICAO API Response: flights=${response.flights?.size}")
 
-                val response = repository.getFlightResponse(cleanRegistration, date)
-                println("📊 API Response: flights=${response.flights?.size}")
-
-                val displayFlights = response.flights?.map { flight ->
-                    // Get device info using array index instead of map key
+                val airfieldFlights = response.flights?.mapNotNull { flight ->
                     val device = response.devices?.getOrNull(flight.device)
 
+                    // Skip flights without start/stop times
+                    if (flight.start == null || flight.stop == null) {
+                        return@mapNotNull null
+                    }
+
                     OgnFlightDisplay(
-                        registration = device?.registration ?: cleanRegistration,
+                        registration = device?.registration ?: "Unknown",
                         aircraftModel = device?.aircraft ?: "Unknown",
-                        takeoffTime = flight.takeoffTime,
-                        landingTime = flight.landingTime,
-                        duration = flight.duration,
-                        maxAltitude = flight.maxAltitude ?: 0,
-                        takeoffAirfield = flight.takeoffAirfield?.shortName ?: flight.takeoffAirfield?.name ?: "Unknown",
-                        landingAirfield = flight.landingAirfield?.shortName ?: flight.landingAirfield?.name ?: "Unknown",
-                        launchMethod = flight.launchMethod ?: "Unknown",
-                        takeoffTs = parseTimeToSeconds(flight.takeoffTime),
-                        landingTs = parseTimeToSeconds(flight.landingTime)
+                        takeoffTime = flight.start,
+                        landingTime = flight.stop,
+                        duration = flight.duration ?: 0,
+                        maxAltitude = flight.maxAlt ?: 0,
+                        takeoffAirfield = response.airfield?.code ?: "Unknown",
+                        landingAirfield = response.airfield?.code ?: "Unknown",
+                        launchMethod = if (flight.towing == true) "Tow" else "Unknown",
+                        takeoffTs = parseOgnTimeToSeconds(flight.start),
+                        landingTs = parseOgnTimeToSeconds(flight.stop)
                     )
                 } ?: emptyList()
 
-                println("✅ Found ${displayFlights.size} flights from multi-airfield search")
-                _ognFlights.value = displayFlights
+                // Sort by takeoff time
+                val sortedFlights = airfieldFlights.sortedBy { it.takeoffTs }
+
+                _allOgnFlights.value = sortedFlights
+                applyRegistrationFilter()
                 _isSearching.value = false
+                println("✅ Found ${sortedFlights.size} flights from ICAO search")
 
             } catch (e: retrofit2.HttpException) {
                 println("❌ HTTP Error ${e.code()}: ${e.message()}")
                 _ognFlights.value = emptyList()
+                _allOgnFlights.value = emptyList()
                 _isSearching.value = false
             } catch (e: Exception) {
                 println("❌ Unexpected error: ${e.javaClass.simpleName}: ${e.message}")
                 e.printStackTrace()
                 _ognFlights.value = emptyList()
+                _allOgnFlights.value = emptyList()
                 _isSearching.value = false
             }
+        }
+    }
+
+    fun filterByRegistration(registration: String) {
+        _registrationFilter.value = registration.trim().uppercase()
+        applyRegistrationFilter()
+    }
+
+    private fun applyRegistrationFilter() {
+        val filter = _registrationFilter.value
+        _ognFlights.value = if (filter.isEmpty()) {
+            _allOgnFlights.value
+        } else {
+            _allOgnFlights.value.filter { flight ->
+                flight.registration.contains(filter, ignoreCase = true)
+            }
+        }
+    }
+
+    fun clearRegistrationFilter() {
+        _registrationFilter.value = ""
+        applyRegistrationFilter()
+    }
+
+    private fun parseOgnTimeToSeconds(timeString: String): Long {
+        // Parse OGN time format like "09h34" or "10h05"
+        val regex = Regex("""(\d+)h(\d+)""")
+        val matchResult = regex.find(timeString)
+
+        return if (matchResult != null) {
+            val hours = matchResult.groupValues[1].toLongOrNull() ?: 0L
+            val minutes = matchResult.groupValues[2].toLongOrNull() ?: 0L
+            hours * 3600 + minutes * 60
+        } else {
+            0L
         }
     }
 
@@ -92,6 +143,8 @@ open class FlightLogViewModel(private val repository: FlightRepository) : ViewMo
 
     fun clearSearch() {
         _ognFlights.value = emptyList()
+        _allOgnFlights.value = emptyList()
+        _registrationFilter.value = ""
         _isSearching.value = false
     }
 

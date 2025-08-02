@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class OgnFlightResponse(
     val airfield: OgnAirfield?,
-    val devices: List<OgnDevice>?, // Changed from Map to List
+    val devices: List<OgnDevice>?,
     val flights: List<OgnFlight>?
 )
 
@@ -20,25 +20,24 @@ data class OgnAirfield(
 
 @JsonClass(generateAdapter = true)
 data class OgnDevice(
-    val address: String?, // The device identifier
-    val aircraft: String?, // Aircraft type
-    val registration: String? // Registration like G-CKOW
+    val address: String?,
+    val aircraft: String?,
+    val registration: String?
 )
 
 @JsonClass(generateAdapter = true)
 data class OgnFlight(
-    val device: Int, // This is now an INDEX into the devices array
-    @Json(name = "takeoff_time") val takeoffTime: String,
-    @Json(name = "landing_time") val landingTime: String,
-    val duration: Int,
-    @Json(name = "max_altitude") val maxAltitude: Int?,
-    @Json(name = "takeoff_airfield") val takeoffAirfield: OgnFlightAirfield?,
-    @Json(name = "landing_airfield") val landingAirfield: OgnFlightAirfield?,
-    @Json(name = "launch_method") val launchMethod: String?
-)
-
-@JsonClass(generateAdapter = true)
-data class OgnFlightAirfield(
-    @Json(name = "short_name") val shortName: String?,
-    val name: String?
+    val device: Int,
+    val start: String?, // Time format like "09h34"
+    val stop: String?, // Time format like "09h40"
+    val duration: Int?, // Duration in seconds
+    @Json(name = "max_alt") val maxAlt: Int?,
+    @Json(name = "max_height") val maxHeight: Int?,
+    @Json(name = "start_q") val startQ: Int?,
+    @Json(name = "stop_q") val stopQ: Int?,
+    @Json(name = "start_tsp") val startTsp: Long?,
+    @Json(name = "stop_tsp") val stopTsp: Long?,
+    val tow: Int?, // Reference to towing aircraft device index
+    val towing: Boolean?,
+    val warn: Boolean?
 )

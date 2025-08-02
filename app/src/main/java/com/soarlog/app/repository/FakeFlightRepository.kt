@@ -1,17 +1,22 @@
+
 package com.soarlog.app.repository
 
 import com.soarlog.app.data.FlightDao
 import com.soarlog.app.models.Flight
+import com.soarlog.app.models.OgnFlightResponse
 import com.soarlog.app.network.OgnApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import java.util.Date
 
 class FakeFlightRepository(
     apiService: OgnApiService?,
     flightDao: FlightDao?
 ) : FlightRepository(apiService!!, flightDao!!) {
-    override suspend fun getFlights(registration: String): List<com.soarlog.app.models.OgnFlight> {
-        return emptyList()
+
+    override suspend fun getFlightsByAirfield(airfield: String, date: Date): OgnFlightResponse {
+        // Return empty response for testing
+        return OgnFlightResponse(null, null, emptyList())
     }
 
     override fun getAllFlights(): Flow<List<Flight>> {
@@ -24,10 +29,10 @@ class FakeFlightRepository(
     }
 
     override suspend fun insert(flight: Flight) {
-        // Do nothing
+        // Do nothing for testing
     }
 
     override suspend fun delete(flight: Flight) {
-        // Do nothing
+        // Do nothing for testing
     }
 }

@@ -3,119 +3,60 @@ package com.soarlog.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.soarlog.app.data.AppDatabase
 import com.soarlog.app.models.Flight
-import com.soarlog.app.network.RetrofitInstance
+import com.soarlog.app.network.ApiClient
 import com.soarlog.app.repository.FlightRepository
-import com.soarlog.app.ui.screens.FlightListScreen
-import com.soarlog.app.ui.screens.StatisticsScreen
 import com.soarlog.app.ui.theme.SoarLogTheme
 import com.soarlog.app.viewmodel.FlightLogViewModel
 import com.soarlog.app.viewmodel.FlightLogViewModelFactory
-import com.soarlog.app.viewmodel.OgnFlightDisplay
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val database = AppDatabase.getDatabase(this)
-        val repository = FlightRepository(RetrofitInstance.api, database.flightDao())
-        val viewModelFactory = FlightLogViewModelFactory(repository)
         setContent {
             SoarLogTheme {
-                val viewModel: FlightLogViewModel = viewModel(factory = viewModelFactory)
                 val navController = rememberNavController()
-                Scaffold(
-                    bottomBar = {
-                        NavigationBar {
-                            NavigationBarItem(
-                                icon = { Icon(Icons.Default.List, contentDescription = "Flights") },
-                                selected = false,
-                                onClick = { navController.navigate("flight-list") }
-                            )
-                            NavigationBarItem(
-                                icon = {
-                                    FloatingActionButton(onClick = { navController.navigate("logbook") }) {
-                                        Icon(Icons.Default.Add, contentDescription = "Log Flight")
-                                    }
-                                },
-                                selected = false,
-                                onClick = { navController.navigate("logbook") }
-                            )
-                            NavigationBarItem(
-                                icon = { Icon(Icons.Default.BarChart, contentDescription = "Statistics") },
-                                selected = false,
-                                onClick = { navController.navigate("statistics") }
-                            )
-                        }
+                val database = AppDatabase.getDatabase(applicationContext)
+                val repository = FlightRepository(ApiClient.ognApiService, database.flightDao())
+                val viewModel: FlightLogViewModel = viewModel(
+                    factory = FlightLogViewModelFactory(repository)
+                )
+
+                NavHost(navController = navController, startDestination = "flightForm") {
+                    composable("flightForm") {
+                        FlightLogForm(
+                            viewModel = viewModel,
+                            onNavigateToFlightList = { navController.navigate("flightList") }
+                        )
                     }
-                ) { paddingValues ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = "flight-list",
-                        modifier = Modifier.padding(paddingValues)
-                    ) {
-                        composable("logbook") {
-                            FlightLogForm(viewModel, onNavigateToFlightList = {
-                                navController.navigate("flight-list")
-                            })
-                        }
-                        composable("flight-list") {
-                            val flights by viewModel.allFlights.collectAsState(initial = emptyList())
-                            FlightListScreen(flights = flights, viewModel = viewModel)
-                        }
-                        composable("statistics") {
-                            val flights by viewModel.allFlights.collectAsState(initial = emptyList())
-                            StatisticsScreen(flights = flights)
-                        }
+                    composable("flightList") {
+                        FlightListScreen(
+                            viewModel = viewModel,
+                            onNavigateToForm = { navController.navigate("flightForm") }
+                        )
                     }
                 }
             }
@@ -130,6 +71,7 @@ fun FlightLogForm(
     onNavigateToFlightList: () -> Unit
 ) {
     var flightRegistration by remember { mutableStateOf("") }
+    var searchAirfield by remember { mutableStateOf("") }
     var p2 by remember { mutableStateOf("") }
     var notes by remember { mutableStateOf("") }
     var gliderType by remember { mutableStateOf("") }
@@ -163,50 +105,36 @@ fun FlightLogForm(
                 .verticalScroll(rememberScrollState())
         ) {
             Text(
-                text = "Auto Flight Search",
+                text = "Browse Flights by ICAO Code",
                 style = MaterialTheme.typography.headlineMedium
             )
 
             val ognFlights by viewModel.ognFlights.collectAsState()
             val isSearching by viewModel.isSearching.collectAsState()
+            val registrationFilter by viewModel.registrationFilter.collectAsState()
 
-            // Update your OutlinedTextField in MainActivity.kt
+            // ICAO code search field
             OutlinedTextField(
-                value = flightRegistration,
+                value = searchAirfield,
                 onValueChange = { newValue ->
-                    // Update the display value immediately
-                    flightRegistration = newValue.uppercase()
-                    
-                    // Clean and validate for search
-                    val cleanValue = newValue.trim().uppercase()
-                    
-                    // Enhanced validation - must be complete registration
-                    val isValidFormat = cleanValue.length >= 5 && 
-                                       cleanValue.contains("-") && 
-                                       cleanValue.split("-").let { parts ->
-                                           parts.size == 2 && 
-                                           parts[0].isNotEmpty() && 
-                                           parts[1].length >= 3
-                                       }
-                    
-                    if (isValidFormat && cleanValue != lastSearchTerm) {
-                        println("✅ Valid registration format: '$cleanValue'")
-                        lastSearchTerm = cleanValue
-                        viewModel.searchFlights(cleanValue, searchDate)
-                    } else if (cleanValue.length >= 2 && !isValidFormat) {
-                        println("⚠️ Incomplete registration: '$cleanValue' (need format like G-CKOW)")
-                        lastSearchTerm = ""
-                        viewModel.clearSearch()
-                    } else if (cleanValue.length < 2) {
+                    searchAirfield = newValue.uppercase()
+                    val cleanIcao = newValue.trim().uppercase()
+                    val currentSearchTerm = "$cleanIcao-${searchDate.time}"
+
+                    if (cleanIcao.length >= 2 && currentSearchTerm != lastSearchTerm) {
+                        println("✅ Triggering ICAO search: '$cleanIcao'")
+                        lastSearchTerm = currentSearchTerm
+                        viewModel.searchFlightsByAirfield(cleanIcao, searchDate)
+                    } else if (cleanIcao.length < 2) {
                         lastSearchTerm = ""
                         viewModel.clearSearch()
                     }
                 },
-                label = { Text("Flight Registration (e.g. G-CKOW, D-KBAD)") },
+                label = { Text("ICAO Code") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                supportingText = { 
-                    Text("Enter complete registration (e.g. G-CKOW)") 
+                supportingText = {
+                    Text("Examples: EGHL (Lasham), EGAD (Dunstable), EGYK (Sutton Bank), EGTB (Booker)")
                 }
             )
 
@@ -222,6 +150,31 @@ fun FlightLogForm(
                 TextButton(onClick = { showSearchDatePicker = true }) {
                     Text(searchDate.toFormattedString())
                 }
+            }
+
+            // Registration filter - only show when flights are available
+            if (ognFlights.isNotEmpty() || registrationFilter.isNotEmpty()) {
+                OutlinedTextField(
+                    value = registrationFilter,
+                    onValueChange = { viewModel.filterByRegistration(it) },
+                    label = { Text("Filter by Registration") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    singleLine = true,
+                    trailingIcon = {
+                        if (registrationFilter.isNotEmpty()) {
+                            IconButton(onClick = { viewModel.clearRegistrationFilter() }) {
+                                Icon(Icons.Default.Clear, contentDescription = "Clear filter")
+                            }
+                        }
+                    },
+                    supportingText = {
+                        if (ognFlights.isNotEmpty()) {
+                            Text("${ognFlights.size} of ${viewModel.ognFlights.value.size + ognFlights.size - viewModel.ognFlights.value.size} flights shown")
+                        }
+                    }
+                )
             }
 
             // Show search status, error, or results
@@ -241,21 +194,26 @@ fun FlightLogForm(
                                 modifier = Modifier.padding(end = 16.dp)
                             )
                             Text(
-                                text = "🔍 Searching for flights...",
+                                text = "🔍 Loading flights...",
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     }
                 }
-                
+
                 // Found results
                 ognFlights.isNotEmpty() -> {
+                    val totalFlights = viewModel.ognFlights.value.size + ognFlights.size - viewModel.ognFlights.value.size
                     Text(
-                        text = "✈️ Found ${ognFlights.size} flight(s):",
+                        text = if (registrationFilter.isNotEmpty()) {
+                            "✈️ ${ognFlights.size} of $totalFlights flight(s) matching '$registrationFilter' on ${searchDate.toFormattedString()}:"
+                        } else {
+                            "✈️ ${ognFlights.size} flight(s) on ${searchDate.toFormattedString()}:"
+                        },
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.padding(vertical = 8.dp)
                     )
-                    
+
                     ognFlights.forEach { flight ->
                         OutlinedCard(
                             onClick = {
@@ -306,9 +264,10 @@ fun FlightLogForm(
                         }
                     }
                 }
-                
+
                 // Search completed but no results (and we have searched for something)
-                !isSearching && ognFlights.isEmpty() && flightRegistration.length >= 2 && lastSearchTerm.isNotEmpty() -> {
+                !isSearching && ognFlights.isEmpty() &&
+                        searchAirfield.length >= 2 && lastSearchTerm.isNotEmpty() -> {
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -318,17 +277,21 @@ fun FlightLogForm(
                             modifier = Modifier.padding(16.dp)
                         ) {
                             Text(
-                                text = "❌ No flights found",
+                                text = if (registrationFilter.isNotEmpty()) "❌ No flights found matching filter" else "❌ No flights found",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.error
                             )
                             Text(
-                                text = "No flights found for '$lastSearchTerm' on ${searchDate.toFormattedString()}",
+                                text = if (registrationFilter.isNotEmpty()) {
+                                    "No flights found matching '$registrationFilter' at '$searchAirfield' on ${searchDate.toFormattedString()}"
+                                } else {
+                                    "No flights found at '$searchAirfield' on ${searchDate.toFormattedString()}"
+                                },
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                text = "Try a different registration or date. The API might not have data for this aircraft.",
+                                text = "Try a different ICAO code or date. Popular gliding sites: EGHL (Lasham), EGAD (Dunstable), EGYK (Sutton Bank), EGTB (Booker), EGBF (Bidford)",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -349,9 +312,11 @@ fun FlightLogForm(
                             onClick = {
                                 searchDate = searchDatePickerState.selectedDateMillis?.let { Date(it) } ?: searchDate
                                 showSearchDatePicker = false
-                                // Re-trigger search with new date if registration is not empty
-                                if (flightRegistration.length >= 2) {
-                                    viewModel.searchFlights(flightRegistration, searchDate)
+                                // Re-trigger search with new date if airfield is not empty
+                                if (searchAirfield.trim().length >= 2) {
+                                    val currentSearchTerm = "${searchAirfield.trim().uppercase()}-${searchDate.time}"
+                                    lastSearchTerm = currentSearchTerm
+                                    viewModel.searchFlightsByAirfield(searchAirfield.trim().uppercase(), searchDate)
                                 }
                             }
                         ) {
@@ -371,6 +336,15 @@ fun FlightLogForm(
                     DatePicker(state = searchDatePickerState)
                 }
             }
+
+            OutlinedTextField(
+                value = flightRegistration,
+                onValueChange = { flightRegistration = it.uppercase() },
+                label = { Text("Aircraft Registration") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            )
 
             OutlinedTextField(
                 value = p2,
@@ -488,6 +462,7 @@ fun FlightLogForm(
                     viewModel.insertFlight(flight)
                     // Clear form
                     flightRegistration = ""
+                    searchAirfield = ""
                     p2 = ""
                     notes = ""
                     gliderType = ""
@@ -497,6 +472,8 @@ fun FlightLogForm(
                     duration = ""
                     lastSearchTerm = ""
                     viewModel.clearSearch()
+                    // Navigate back to flight list
+                    onNavigateToFlightList()
                 },
                 modifier = Modifier.padding(top = 16.dp)
             ) {
@@ -506,9 +483,92 @@ fun FlightLogForm(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FlightListScreen(
+    viewModel: FlightLogViewModel,
+    onNavigateToForm: () -> Unit
+) {
+    val flights by viewModel.allFlights.collectAsState()
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Flight Log") },
+                actions = {
+                    IconButton(onClick = onNavigateToForm) {
+                        Icon(Icons.Default.Add, contentDescription = "Add Flight")
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            items(flights) { flight ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 4.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "${flight.registration} - ${flight.gliderType}",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                text = "${flight.takeoff} → ${flight.landing}",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = "${flight.date.toFormattedString()} - ${flight.duration} min",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            if (flight.p2?.isNotEmpty() == true) {
+                                Text(
+                                    text = "P2: ${flight.p2}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            if (flight.notes?.isNotEmpty() == true) {
+                                Text(
+                                    text = "Notes: ${flight.notes}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                        IconButton(
+                            onClick = { viewModel.deleteFlight(flight) }
+                        ) {
+                            Icon(
+                                Icons.Default.Delete,
+                                contentDescription = "Delete Flight",
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 fun Date.toFormattedString(): String {
-    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    return sdf.format(this)
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    return formatter.format(this)
 }
 
 fun formatDuration(seconds: Int): String {
@@ -518,13 +578,5 @@ fun formatDuration(seconds: Int): String {
         "${hours}h ${minutes}m"
     } else {
         "${minutes}m"
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FlightLogFormPreview() {
-    SoarLogTheme {
-        //FlightLogForm()
     }
 }
