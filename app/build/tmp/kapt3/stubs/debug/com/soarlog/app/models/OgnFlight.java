@@ -2,41 +2,38 @@ package com.soarlog.app.models;
 
 import java.lang.System;
 
-@kotlin.Metadata(mv = {1, 8, 0}, k = 1, d1 = {"\u00000\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010\t\n\u0002\b\u0002\n\u0002\u0010\u0006\n\u0002\b#\n\u0002\u0010\u000b\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0002\b\u0087\b\u0018\u00002\u00020\u0001Bo\u0012\b\b\u0001\u0010\u0002\u001a\u00020\u0003\u0012\b\b\u0001\u0010\u0004\u001a\u00020\u0005\u0012\b\b\u0001\u0010\u0006\u001a\u00020\u0005\u0012\b\b\u0001\u0010\u0007\u001a\u00020\b\u0012\b\b\u0001\u0010\t\u001a\u00020\b\u0012\b\b\u0001\u0010\n\u001a\u00020\b\u0012\b\b\u0001\u0010\u000b\u001a\u00020\b\u0012\u0006\u0010\f\u001a\u00020\u0003\u0012\u0006\u0010\r\u001a\u00020\u0003\u0012\b\b\u0001\u0010\u000e\u001a\u00020\u0003\u0012\b\b\u0001\u0010\u000f\u001a\u00020\u0003\u00a2\u0006\u0002\u0010\u0010J\t\u0010\u001f\u001a\u00020\u0003H\u00c6\u0003J\t\u0010 \u001a\u00020\u0003H\u00c6\u0003J\t\u0010!\u001a\u00020\u0003H\u00c6\u0003J\t\u0010\"\u001a\u00020\u0005H\u00c6\u0003J\t\u0010#\u001a\u00020\u0005H\u00c6\u0003J\t\u0010$\u001a\u00020\bH\u00c6\u0003J\t\u0010%\u001a\u00020\bH\u00c6\u0003J\t\u0010&\u001a\u00020\bH\u00c6\u0003J\t\u0010\'\u001a\u00020\bH\u00c6\u0003J\t\u0010(\u001a\u00020\u0003H\u00c6\u0003J\t\u0010)\u001a\u00020\u0003H\u00c6\u0003Jw\u0010*\u001a\u00020\u00002\b\b\u0003\u0010\u0002\u001a\u00020\u00032\b\b\u0003\u0010\u0004\u001a\u00020\u00052\b\b\u0003\u0010\u0006\u001a\u00020\u00052\b\b\u0003\u0010\u0007\u001a\u00020\b2\b\b\u0003\u0010\t\u001a\u00020\b2\b\b\u0003\u0010\n\u001a\u00020\b2\b\b\u0003\u0010\u000b\u001a\u00020\b2\b\b\u0002\u0010\f\u001a\u00020\u00032\b\b\u0002\u0010\r\u001a\u00020\u00032\b\b\u0003\u0010\u000e\u001a\u00020\u00032\b\b\u0003\u0010\u000f\u001a\u00020\u0003H\u00c6\u0001J\u0013\u0010+\u001a\u00020,2\b\u0010-\u001a\u0004\u0018\u00010\u0001H\u00d6\u0003J\t\u0010.\u001a\u00020/H\u00d6\u0001J\t\u00100\u001a\u00020\u0003H\u00d6\u0001R\u0011\u0010\u000e\u001a\u00020\u0003\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0011\u0010\u0012R\u0011\u0010\r\u001a\u00020\u0003\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0013\u0010\u0012R\u0011\u0010\u0002\u001a\u00020\u0003\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0014\u0010\u0012R\u0011\u0010\n\u001a\u00020\b\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0015\u0010\u0016R\u0011\u0010\u000b\u001a\u00020\b\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0017\u0010\u0016R\u0011\u0010\u0006\u001a\u00020\u0005\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0018\u0010\u0019R\u0011\u0010\u000f\u001a\u00020\u0003\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001a\u0010\u0012R\u0011\u0010\f\u001a\u00020\u0003\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001b\u0010\u0012R\u0011\u0010\u0007\u001a\u00020\b\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001c\u0010\u0016R\u0011\u0010\t\u001a\u00020\b\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001d\u0010\u0016R\u0011\u0010\u0004\u001a\u00020\u0005\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001e\u0010\u0019\u00a8\u00061"}, d2 = {"Lcom/soarlog/app/models/OgnFlight;", "", "deviceId", "", "takeoffTs", "", "landingTs", "takeoffLat", "", "takeoffLon", "landingLat", "landingLon", "registration", "cn", "aircraftModel", "launchType", "(Ljava/lang/String;JJDDDDLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", "getAircraftModel", "()Ljava/lang/String;", "getCn", "getDeviceId", "getLandingLat", "()D", "getLandingLon", "getLandingTs", "()J", "getLaunchType", "getRegistration", "getTakeoffLat", "getTakeoffLon", "getTakeoffTs", "component1", "component10", "component11", "component2", "component3", "component4", "component5", "component6", "component7", "component8", "component9", "copy", "equals", "", "other", "hashCode", "", "toString", "app_debug"})
+@kotlin.Metadata(mv = {1, 8, 0}, k = 1, d1 = {"\u0000(\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u001b\n\u0002\u0010\u000b\n\u0002\b\u0004\b\u0087\b\u0018\u00002\u00020\u0001BY\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\b\b\u0001\u0010\u0004\u001a\u00020\u0005\u0012\b\b\u0001\u0010\u0006\u001a\u00020\u0005\u0012\u0006\u0010\u0007\u001a\u00020\u0003\u0012\n\b\u0001\u0010\b\u001a\u0004\u0018\u00010\u0003\u0012\n\b\u0001\u0010\t\u001a\u0004\u0018\u00010\n\u0012\n\b\u0001\u0010\u000b\u001a\u0004\u0018\u00010\n\u0012\n\b\u0001\u0010\f\u001a\u0004\u0018\u00010\u0005\u00a2\u0006\u0002\u0010\rJ\t\u0010\u001b\u001a\u00020\u0003H\u00c6\u0003J\t\u0010\u001c\u001a\u00020\u0005H\u00c6\u0003J\t\u0010\u001d\u001a\u00020\u0005H\u00c6\u0003J\t\u0010\u001e\u001a\u00020\u0003H\u00c6\u0003J\u0010\u0010\u001f\u001a\u0004\u0018\u00010\u0003H\u00c6\u0003\u00a2\u0006\u0002\u0010\u0017J\u000b\u0010 \u001a\u0004\u0018\u00010\nH\u00c6\u0003J\u000b\u0010!\u001a\u0004\u0018\u00010\nH\u00c6\u0003J\u000b\u0010\"\u001a\u0004\u0018\u00010\u0005H\u00c6\u0003Jf\u0010#\u001a\u00020\u00002\b\b\u0002\u0010\u0002\u001a\u00020\u00032\b\b\u0003\u0010\u0004\u001a\u00020\u00052\b\b\u0003\u0010\u0006\u001a\u00020\u00052\b\b\u0002\u0010\u0007\u001a\u00020\u00032\n\b\u0003\u0010\b\u001a\u0004\u0018\u00010\u00032\n\b\u0003\u0010\t\u001a\u0004\u0018\u00010\n2\n\b\u0003\u0010\u000b\u001a\u0004\u0018\u00010\n2\n\b\u0003\u0010\f\u001a\u0004\u0018\u00010\u0005H\u00c6\u0001\u00a2\u0006\u0002\u0010$J\u0013\u0010%\u001a\u00020&2\b\u0010\'\u001a\u0004\u0018\u00010\u0001H\u00d6\u0003J\t\u0010(\u001a\u00020\u0003H\u00d6\u0001J\t\u0010)\u001a\u00020\u0005H\u00d6\u0001R\u0011\u0010\u0002\u001a\u00020\u0003\u00a2\u0006\b\n\u0000\u001a\u0004\b\u000e\u0010\u000fR\u0011\u0010\u0007\u001a\u00020\u0003\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0010\u0010\u000fR\u0013\u0010\u000b\u001a\u0004\u0018\u00010\n\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0011\u0010\u0012R\u0011\u0010\u0006\u001a\u00020\u0005\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0013\u0010\u0014R\u0013\u0010\f\u001a\u0004\u0018\u00010\u0005\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0015\u0010\u0014R\u0015\u0010\b\u001a\u0004\u0018\u00010\u0003\u00a2\u0006\n\n\u0002\u0010\u0018\u001a\u0004\b\u0016\u0010\u0017R\u0013\u0010\t\u001a\u0004\u0018\u00010\n\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0019\u0010\u0012R\u0011\u0010\u0004\u001a\u00020\u0005\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001a\u0010\u0014\u00a8\u0006*"}, d2 = {"Lcom/soarlog/app/models/OgnFlight;", "", "device", "", "takeoffTime", "", "landingTime", "duration", "maxAltitude", "takeoffAirfield", "Lcom/soarlog/app/models/OgnFlightAirfield;", "landingAirfield", "launchMethod", "(ILjava/lang/String;Ljava/lang/String;ILjava/lang/Integer;Lcom/soarlog/app/models/OgnFlightAirfield;Lcom/soarlog/app/models/OgnFlightAirfield;Ljava/lang/String;)V", "getDevice", "()I", "getDuration", "getLandingAirfield", "()Lcom/soarlog/app/models/OgnFlightAirfield;", "getLandingTime", "()Ljava/lang/String;", "getLaunchMethod", "getMaxAltitude", "()Ljava/lang/Integer;", "Ljava/lang/Integer;", "getTakeoffAirfield", "getTakeoffTime", "component1", "component2", "component3", "component4", "component5", "component6", "component7", "component8", "copy", "(ILjava/lang/String;Ljava/lang/String;ILjava/lang/Integer;Lcom/soarlog/app/models/OgnFlightAirfield;Lcom/soarlog/app/models/OgnFlightAirfield;Ljava/lang/String;)Lcom/soarlog/app/models/OgnFlight;", "equals", "", "other", "hashCode", "toString", "app_debug"})
+@com.squareup.moshi.JsonClass(generateAdapter = true)
 public final class OgnFlight {
+    private final int device = 0;
     @org.jetbrains.annotations.NotNull
-    private final java.lang.String deviceId = null;
-    private final long takeoffTs = 0L;
-    private final long landingTs = 0L;
-    private final double takeoffLat = 0.0;
-    private final double takeoffLon = 0.0;
-    private final double landingLat = 0.0;
-    private final double landingLon = 0.0;
+    private final java.lang.String takeoffTime = null;
     @org.jetbrains.annotations.NotNull
-    private final java.lang.String registration = null;
-    @org.jetbrains.annotations.NotNull
-    private final java.lang.String cn = null;
-    @org.jetbrains.annotations.NotNull
-    private final java.lang.String aircraftModel = null;
-    @org.jetbrains.annotations.NotNull
-    private final java.lang.String launchType = null;
+    private final java.lang.String landingTime = null;
+    private final int duration = 0;
+    @org.jetbrains.annotations.Nullable
+    private final java.lang.Integer maxAltitude = null;
+    @org.jetbrains.annotations.Nullable
+    private final com.soarlog.app.models.OgnFlightAirfield takeoffAirfield = null;
+    @org.jetbrains.annotations.Nullable
+    private final com.soarlog.app.models.OgnFlightAirfield landingAirfield = null;
+    @org.jetbrains.annotations.Nullable
+    private final java.lang.String launchMethod = null;
     
     @org.jetbrains.annotations.NotNull
-    public final com.soarlog.app.models.OgnFlight copy(@org.jetbrains.annotations.NotNull
-    @com.squareup.moshi.Json(name = "device_id")
-    java.lang.String deviceId, @com.squareup.moshi.Json(name = "takeoff_ts")
-    long takeoffTs, @com.squareup.moshi.Json(name = "landing_ts")
-    long landingTs, @com.squareup.moshi.Json(name = "takeoff_lat")
-    double takeoffLat, @com.squareup.moshi.Json(name = "takeoff_lon")
-    double takeoffLon, @com.squareup.moshi.Json(name = "landing_lat")
-    double landingLat, @com.squareup.moshi.Json(name = "landing_lon")
-    double landingLon, @org.jetbrains.annotations.NotNull
-    java.lang.String registration, @org.jetbrains.annotations.NotNull
-    java.lang.String cn, @org.jetbrains.annotations.NotNull
-    @com.squareup.moshi.Json(name = "aircraft_model")
-    java.lang.String aircraftModel, @org.jetbrains.annotations.NotNull
-    @com.squareup.moshi.Json(name = "launch_type")
-    java.lang.String launchType) {
+    public final com.soarlog.app.models.OgnFlight copy(int device, @org.jetbrains.annotations.NotNull
+    @com.squareup.moshi.Json(name = "takeoff_time")
+    java.lang.String takeoffTime, @org.jetbrains.annotations.NotNull
+    @com.squareup.moshi.Json(name = "landing_time")
+    java.lang.String landingTime, int duration, @org.jetbrains.annotations.Nullable
+    @com.squareup.moshi.Json(name = "max_altitude")
+    java.lang.Integer maxAltitude, @org.jetbrains.annotations.Nullable
+    @com.squareup.moshi.Json(name = "takeoff_airfield")
+    com.soarlog.app.models.OgnFlightAirfield takeoffAirfield, @org.jetbrains.annotations.Nullable
+    @com.squareup.moshi.Json(name = "landing_airfield")
+    com.soarlog.app.models.OgnFlightAirfield landingAirfield, @org.jetbrains.annotations.Nullable
+    @com.squareup.moshi.Json(name = "launch_method")
+    java.lang.String launchMethod) {
         return null;
     }
     
@@ -57,119 +54,95 @@ public final class OgnFlight {
         return null;
     }
     
-    public OgnFlight(@org.jetbrains.annotations.NotNull
-    @com.squareup.moshi.Json(name = "device_id")
-    java.lang.String deviceId, @com.squareup.moshi.Json(name = "takeoff_ts")
-    long takeoffTs, @com.squareup.moshi.Json(name = "landing_ts")
-    long landingTs, @com.squareup.moshi.Json(name = "takeoff_lat")
-    double takeoffLat, @com.squareup.moshi.Json(name = "takeoff_lon")
-    double takeoffLon, @com.squareup.moshi.Json(name = "landing_lat")
-    double landingLat, @com.squareup.moshi.Json(name = "landing_lon")
-    double landingLon, @org.jetbrains.annotations.NotNull
-    java.lang.String registration, @org.jetbrains.annotations.NotNull
-    java.lang.String cn, @org.jetbrains.annotations.NotNull
-    @com.squareup.moshi.Json(name = "aircraft_model")
-    java.lang.String aircraftModel, @org.jetbrains.annotations.NotNull
-    @com.squareup.moshi.Json(name = "launch_type")
-    java.lang.String launchType) {
+    public OgnFlight(int device, @org.jetbrains.annotations.NotNull
+    @com.squareup.moshi.Json(name = "takeoff_time")
+    java.lang.String takeoffTime, @org.jetbrains.annotations.NotNull
+    @com.squareup.moshi.Json(name = "landing_time")
+    java.lang.String landingTime, int duration, @org.jetbrains.annotations.Nullable
+    @com.squareup.moshi.Json(name = "max_altitude")
+    java.lang.Integer maxAltitude, @org.jetbrains.annotations.Nullable
+    @com.squareup.moshi.Json(name = "takeoff_airfield")
+    com.soarlog.app.models.OgnFlightAirfield takeoffAirfield, @org.jetbrains.annotations.Nullable
+    @com.squareup.moshi.Json(name = "landing_airfield")
+    com.soarlog.app.models.OgnFlightAirfield landingAirfield, @org.jetbrains.annotations.Nullable
+    @com.squareup.moshi.Json(name = "launch_method")
+    java.lang.String launchMethod) {
         super();
     }
     
+    public final int component1() {
+        return 0;
+    }
+    
+    public final int getDevice() {
+        return 0;
+    }
+    
     @org.jetbrains.annotations.NotNull
-    public final java.lang.String component1() {
+    public final java.lang.String component2() {
         return null;
     }
     
     @org.jetbrains.annotations.NotNull
-    public final java.lang.String getDeviceId() {
+    public final java.lang.String getTakeoffTime() {
         return null;
     }
     
-    public final long component2() {
-        return 0L;
-    }
-    
-    public final long getTakeoffTs() {
-        return 0L;
-    }
-    
-    public final long component3() {
-        return 0L;
-    }
-    
-    public final long getLandingTs() {
-        return 0L;
-    }
-    
-    public final double component4() {
-        return 0.0;
-    }
-    
-    public final double getTakeoffLat() {
-        return 0.0;
-    }
-    
-    public final double component5() {
-        return 0.0;
-    }
-    
-    public final double getTakeoffLon() {
-        return 0.0;
-    }
-    
-    public final double component6() {
-        return 0.0;
-    }
-    
-    public final double getLandingLat() {
-        return 0.0;
-    }
-    
-    public final double component7() {
-        return 0.0;
-    }
-    
-    public final double getLandingLon() {
-        return 0.0;
+    @org.jetbrains.annotations.NotNull
+    public final java.lang.String component3() {
+        return null;
     }
     
     @org.jetbrains.annotations.NotNull
+    public final java.lang.String getLandingTime() {
+        return null;
+    }
+    
+    public final int component4() {
+        return 0;
+    }
+    
+    public final int getDuration() {
+        return 0;
+    }
+    
+    @org.jetbrains.annotations.Nullable
+    public final java.lang.Integer component5() {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.Nullable
+    public final java.lang.Integer getMaxAltitude() {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.Nullable
+    public final com.soarlog.app.models.OgnFlightAirfield component6() {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.Nullable
+    public final com.soarlog.app.models.OgnFlightAirfield getTakeoffAirfield() {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.Nullable
+    public final com.soarlog.app.models.OgnFlightAirfield component7() {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.Nullable
+    public final com.soarlog.app.models.OgnFlightAirfield getLandingAirfield() {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.Nullable
     public final java.lang.String component8() {
         return null;
     }
     
-    @org.jetbrains.annotations.NotNull
-    public final java.lang.String getRegistration() {
-        return null;
-    }
-    
-    @org.jetbrains.annotations.NotNull
-    public final java.lang.String component9() {
-        return null;
-    }
-    
-    @org.jetbrains.annotations.NotNull
-    public final java.lang.String getCn() {
-        return null;
-    }
-    
-    @org.jetbrains.annotations.NotNull
-    public final java.lang.String component10() {
-        return null;
-    }
-    
-    @org.jetbrains.annotations.NotNull
-    public final java.lang.String getAircraftModel() {
-        return null;
-    }
-    
-    @org.jetbrains.annotations.NotNull
-    public final java.lang.String component11() {
-        return null;
-    }
-    
-    @org.jetbrains.annotations.NotNull
-    public final java.lang.String getLaunchType() {
+    @org.jetbrains.annotations.Nullable
+    public final java.lang.String getLaunchMethod() {
         return null;
     }
 }

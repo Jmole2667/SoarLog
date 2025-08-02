@@ -1,10 +1,15 @@
 package com.soarlog.app.network
 
-import com.soarlog.app.models.OgnFlight
+import com.soarlog.app.models.OgnFlightResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface OgnApiService {
-    @GET("api/flights/{registration}")
-    suspend fun getFlights(@Path("registration") registration: String): List<OgnFlight>
+    // The ONLY working endpoint - search by airfield
+    @GET("api/logbook/{airfield}/{date}")
+    suspend fun getFlightsByAirfield(
+        @Path("airfield") airfield: String,
+        @Path("date") date: String
+    ): Response<OgnFlightResponse>
 }
